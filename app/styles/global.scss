@@ -1,0 +1,293 @@
+@import "vars";
+
+@import "components/Layout";
+@import "components/Navigation";
+@import "components/Header";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+body {
+  color: $font_color;
+  background: $bg;
+}
+
+.positions {
+  padding: 45px 0;
+  overflow-x: scroll;
+  max-width: 100%;
+}
+
+.position {
+  display: flex;
+  gap: 5px;
+
+  background: #fff;
+  border-radius: 15px;
+  height: 65px;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px 4px 39px -26px rgba(0, 0, 0, 0.25);
+  font-size: 16px;
+  padding: 5px 10px 5px 5px;
+
+  &+.position {
+    margin-top: 5px;
+  }
+
+  &:hover {
+    background: #f7f7f7;
+  }
+
+  &__btns {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: flex-end;
+  }
+
+  &__price {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: $purple;
+    font-weight: 500;
+  }
+
+  &__discount {
+    color: white;
+    border-radius: 20px;
+    padding: 5px 10px;
+    font-size: 14px;
+    background: $purple;
+  }
+
+  &__btn {
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .1s ease-in;
+    cursor: pointer;
+
+    &:hover {
+      opacity: .8;
+    }
+
+    img {
+      width: 20px;
+    }
+
+    &.position__btn_edit {
+      background: $lime;
+    }
+
+    &.position__btn_delete {
+      background: $red;
+    }
+  }
+
+  &__col {
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.position__col_1 {
+      flex-basis: 5%;
+    }
+    &.position__col_2 {
+      flex-basis: 10%;
+    }
+    &.position__col_3 {
+      flex-basis: 15%;
+    }
+    &.position__col_4 {
+      flex-basis: 20%;
+    }
+  }
+
+  &__number {
+    justify-content: flex-end;
+  }
+
+  &__img {
+    width: 55px;
+    height: 55px;
+    border-radius: 15px;
+    background-position: center;
+    background-size: cover;
+  }
+
+  &__id {
+    font-weight: 500;
+  }
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 0;
+  overflow-x: scroll;
+  background: $bg;
+}
+
+.my-checkbox {
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  input[type="checkbox"]:checked + label {
+    background: $purple;
+  }
+
+  input[type="checkbox"]:checked + label:hover {
+    opacity: 1 !important;
+  }
+
+
+  label {
+    border-radius: 100%;
+    cursor: pointer;
+    width: 23px;
+    height: 23px;
+    border: 1px solid #C8C8C8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: $purple;
+      opacity: .3;
+    }
+
+    img {
+      width: 20px;
+    }
+  }
+}
+
+.btn {
+  cursor: pointer;
+  border: none;
+  background: $purple;
+  color: white;
+  border-radius: 15px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: .2rem;
+  font-size: 18px;
+  outline: none;
+
+  &.btn_sm {
+    padding: 5px 10px;
+  }
+
+  &.btn_lime {
+    background: $lime;
+  }
+
+  &.btn_red {
+    background: $red;
+  }
+
+  &:hover {
+    opacity: .8;
+  }
+
+  img {
+    width: 30px;
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: bold;
+    font-size: 24px;
+
+    img {
+      width: 40px;
+    }
+  }
+}
+
+.field {
+  font-size: 16px !important;
+  height: 40px !important;
+  border-radius: 15px !important;
+  padding: 9px 15px !important;
+  outline: none !important;
+  border: 1px solid #d8dae5 !important;
+  width: 100%;
+
+  &[readonly] {
+    background: #ededed;
+  }
+}
+
+.form {
+  padding: 20px;
+
+  .label {
+    margin-bottom: 8px;
+  }
+
+  &__col {
+    width: 100%;
+  }
+
+  &__row {
+    display: flex;
+    gap: 20px;
+  }
+
+  &__header {
+    display: flex;
+    width: 100%;
+    margin-bottom: 1rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.property {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  &+.property {
+    margin-top: .5rem;
+  }
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.d-flex {
+  display: flex;
+
+  &.flex-end {
+    justify-content: flex-end;
+  }
+}
