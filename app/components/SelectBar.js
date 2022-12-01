@@ -30,7 +30,7 @@ const SelectBar = () => {
     }, [actionData])
 
     useEffect(() => {
-        store.selectedPositions.size && store.setIsSelectBarShown(true)
+        store.setIsSelectBarShown(!!store.selectedPositions.size)
     }, [store.selectedPositions.size])
 
     return (
