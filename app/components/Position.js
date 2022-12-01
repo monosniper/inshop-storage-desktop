@@ -8,6 +8,10 @@ import Checkbox from "~/components/Checkbox";
 import {Dialog, Heading, Label, Pane, SideSheet, Textarea, TextInputField, toaster} from "evergreen-ui";
 import {Form, useActionData, useSubmit} from "@remix-run/react";
 import {toast} from "react-toastify";
+import {$positionTypes} from "~/config";
+import {store} from "~/lib/mobx";
+import {observer} from "mobx-react";
+import checkIcon from "~/assets/icons/check.svg";
 
 const Position = ({ position, categories, currency }) => {
     const discount_types = {
@@ -19,12 +23,13 @@ const Position = ({ position, categories, currency }) => {
     const actionData = useActionData();
     const deleteFor = useRef();
 
-    const [selected, setSelected] = useState(false)
+    // const [selected, setSelected] = useState(store.selectedPositions.has(position.id))
     const [isEditOpen, setIsEditOpen] = useState(false)
     const [isPropCreateShown, setIsPropCreateShown] = useState(false)
     const [isSureDeleteShown, setIsSureDeleteShown] = useState(false)
 
     const [title, setTitle] = useState(position.title);
+    const [type, setType] = useState('');
     const [subtitle, setSubtitle] = useState(position.subtitle);
     const [description, setDescription] = useState(position.description);
     const [price, setPrice] = useState(position.price);
@@ -37,8 +42,22 @@ const Position = ({ position, categories, currency }) => {
 
     const [newPropKey, setNewPropKey] = useState('');
 
-    const handleSelect = checked => {
-        setSelected(checked)
+    // const handleSelect = checked => {
+    //     setSelected(checked)
+    //
+    //     if(checked) {
+    //         store.selectPosition(position.id)
+    //     } else {
+    //         store.unselectPosition(position.id)
+    //     }
+    // }
+
+    const handleSelect = () => {
+        if(store.selectedPositions.has(position.id)) {
+            store.unselectPosition(position.id)
+        } else {
+            store.selectPosition(position.id)
+        }
     }
 
     const handleEdit = () => {
@@ -95,7 +114,13 @@ const Position = ({ position, categories, currency }) => {
     return (
         <div className={'position'}>
             <div className="position__col position__col_1">
-                <Checkbox handleCheck={handleSelect} defaultChecked={selected} />
+                {/*<Checkbox handleCheck={handleSelect} defaultChecked={selected} />*/}
+                <div className={'my-checkbox'}>
+                    <input type="checkbox" defaultChecked={store.selectedPositions.has(position.id)}/>
+                    <label onClick={handleSelect} className="checkbox">
+                        <img src={checkIcon}/>
+                    </label>
+                </div>
             </div>
             <div className="position__col position__col_1 position__id position__number">{position.id}</div>
             <div className="position__col position__col_2">
@@ -111,10 +136,10 @@ const Position = ({ position, categories, currency }) => {
             <div className="position__col position__col_1 position__number">{position.inStock}</div>
             <div className="position__col position__col_1 position__number">{position.priority}</div>
             <div className="position__col position__col_2 position__btns">
-                <div className="position__btn position__btn_edit" onClick={handleEdit}>
+                <div className={"position__btn position__btn_edit " + (store.isSelectBarShown ? 'position__btn_disabled' : '')} onClick={handleEdit}>
                     <img src={editIcon} />
                 </div>
-                <div className="position__btn position__btn_delete" onClick={handlePreDelete}>
+                <div className={"position__btn position__btn_delete " + (store.isSelectBarShown ? 'position__btn_disabled' : '')} onClick={handlePreDelete}>
                     <img src={deleteIcon} />
                 </div>
             </div>
@@ -128,6 +153,7 @@ const Position = ({ position, categories, currency }) => {
                     <Heading size={600}>Редактирование <b>#{position.id}</b></Heading>
                 </Pane>
                 <Form method='post' className="form">
+                    <input type="hidden" name={'_action'} value={'update'}/>
                     <input type="hidden" name={'id'} value={position.id}/>
                     <TextInputField
                         className={'field'}
@@ -232,6 +258,17 @@ const Position = ({ position, categories, currency }) => {
                             </select>
                         </div>
                     </div>
+                    <Label marginBottom={8} display="block">
+                        Тип позиции
+                    </Label>
+                    <select
+                        className={'field ub-mb_24px'}
+                        name={'type'}
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                    >
+                        {$positionTypes.map((type, i) => <option key={'type-'+i} value={type.slug}>{type.title}</option>)}
+                    </select>
                     <div className="form__header">
                         <Label display="block">
                             Свойства
@@ -303,7 +340,8 @@ const Position = ({ position, categories, currency }) => {
                 // hasFooter={false}
             >
                 Позиция будет удалена безвозвратно
-                <Form ref={deleteFor} method="post" action={'/storage/delete'}>
+                <Form ref={deleteFor} method="post">
+                    <input type="hidden" name={'_action'} value={'delete'}/>
                     <input type="hidden" name={'id'} value={position.id}/>
                 </Form>
             </Dialog>
@@ -311,4 +349,4 @@ const Position = ({ position, categories, currency }) => {
     );
 };
 
-export default Position;
+export default observer(Position);

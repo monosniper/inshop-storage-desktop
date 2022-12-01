@@ -6,6 +6,12 @@ export const DELETE_POSITION = gql`
     }
 `
 
+export const DELETE_POSITIONS = gql`
+    mutation deletePositions($ids: [ID!]!) {
+        deletePositions(ids: $ids)
+    }
+`
+
 export const CREATE_POSITION = gql`
     mutation createPosition($input: CreatePositionInput!) {
         createPosition(input: $input) {

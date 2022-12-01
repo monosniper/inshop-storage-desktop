@@ -3,6 +3,7 @@
 @import "components/Layout";
 @import "components/Navigation";
 @import "components/Header";
+@import "components/SelectBar";
 
 * {
   margin: 0;
@@ -79,6 +80,11 @@ body {
     justify-content: center;
     transition: .1s ease-in;
     cursor: pointer;
+
+    &.position__btn_disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
 
     &:hover {
       opacity: .8;

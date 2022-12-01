@@ -2,10 +2,11 @@ import React from 'react';
 import Header from "~/components/Header";
 import Navigation from "~/components/Navigation";
 import {ToastContainer} from "react-toastify";
+import SelectBar from "~/components/SelectBar";
 
 const Layout = ({ children }) => {
     return (
-        <div className={'wrapper'}>
+        <div className={'wrapper container'}>
             <Navigation />
             <div className={'wrapper__right'}>
                 <Header />
@@ -23,6 +24,8 @@ const Layout = ({ children }) => {
                     theme="dark"
                 />
             </div>
+            <SelectBar />
+
         </div>
     );
 };

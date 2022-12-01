@@ -1,9 +1,6 @@
 .wrapper {
   display: flex;
-  width: 1600px;
-  max-width: calc(100vw - 20px);
-  padding: 0 10px;
-  margin: 0 auto;
+  padding-bottom: 50px !important;
 
   &__right {
     padding: 20px 20px 0 0;
@@ -11,3 +8,9 @@
   }
 }
 
+.container {
+  width: 1600px;
+  max-width: calc(100vw - 20px);
+  padding: 0 10px;
+  margin: 0 auto;
+}

@@ -11,8 +11,8 @@ const Checkbox = ({ handleCheck, defaultChecked }) => {
 
     return (
         <div className={'my-checkbox'}>
-            <input type="checkbox" defaultChecked={checked}/>
-            <label onClick={(e) => setChecked(!checked)} className="checkbox">
+            <input type="checkbox" defaultChecked={defaultChecked}/>
+            <label onClick={(e) => setChecked(!defaultChecked)} className="checkbox">
                 <img src={checkIcon}/>
             </label>
         </div>

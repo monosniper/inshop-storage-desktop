@@ -17,11 +17,20 @@
   justify-content: center;
   gap: 0.5rem;
   opacity: 0.5;
+  z-index: 10;
+  position: relative;
   transition: 0.2s ease-in;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25);
 }
 .nav-item:hover {
+  box-shadow: none;
   opacity: 0.8;
+}
+.nav-item:hover::after {
+  width: fit-content;
+  padding: 0 25px;
+  padding-left: 70px;
+  opacity: 1;
 }
 .nav-item:hover img {
   transform: rotate(180deg);

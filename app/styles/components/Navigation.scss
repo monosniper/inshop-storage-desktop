@@ -19,11 +19,39 @@
     justify-content: center;
     gap: .5rem;
     opacity: .5;
+    z-index: 10;
+    position: relative;
     transition: .2s ease-in;
     box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25);
 
+    //&::after {
+    //  content: "asdsadasdasdsaddas";
+    //  position: absolute;
+    //  height: 70px;
+    //  width: 0;
+    //  background: #50139E;
+    //  color: white;
+    //  border-radius: 70px;
+    //  left: 0;
+    //  display: flex;
+    //  align-items: center;
+    //  z-index: -1;
+    //  padding: 0;
+    //  transition: padding .3s ease-in;
+    //  opacity: 0;
+    //}
+
     &:hover {
+
+      box-shadow: none;
       opacity: .8;
+
+      &::after {
+        width: fit-content;
+        padding: 0 25px;
+        padding-left: 70px;
+        opacity: 1;
+      }
 
       img {
         transform: rotate(180deg);
