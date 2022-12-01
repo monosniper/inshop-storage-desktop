@@ -9,6 +9,7 @@ import Layout from "~/components/Layout";
 import storageIcon from "~/assets/icons/black_storage.svg";
 import addIcon from "~/assets/icons/add.svg";
 import {useEffect, useTransition} from "react";
+import {toast} from "react-toastify";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
@@ -45,6 +46,14 @@ export const action = async ({ request }) => {
 
 export default function Storage() {
   const data = useLoaderData();
+    const actionData = useActionData();
+
+    useEffect(() => {
+        console.log(actionData)
+        if(actionData && actionData.data && actionData.data.updatePosition) {
+            toast('Изменения сохранены')
+        }
+    }, [actionData])
 
   return <Layout>
       <div className="title">

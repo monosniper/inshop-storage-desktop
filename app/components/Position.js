@@ -87,10 +87,8 @@ const Position = ({ position, categories, currency }) => {
     }
 
     useEffect(() => {
-        console.log(actionData)
         if(actionData && actionData.data && actionData.data.updatePosition) {
             setIsEditOpen(false)
-            toast('Изменения сохранены')
         }
     }, [actionData])
 
