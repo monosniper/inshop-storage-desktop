@@ -25,6 +25,7 @@
 .nav-item:hover {
   box-shadow: none;
   opacity: 0.8;
+  transform: scale(1.1);
 }
 .nav-item:hover::after {
   width: fit-content;

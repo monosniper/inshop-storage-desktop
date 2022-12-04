@@ -4,6 +4,9 @@
 @import "components/Navigation";
 @import "components/Header";
 @import "components/SelectBar";
+@import "filepond/dist/filepond.min.css";
+@import "@draft-js-plugins/static-toolbar/lib/plugin.css";
+@import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
 * {
   margin: 0;

@@ -6,12 +6,13 @@ import deleteIcon from '../assets/icons/delete.svg'
 import plusIcon from '../assets/icons/add.svg'
 import Checkbox from "~/components/Checkbox";
 import {Dialog, Heading, Label, Pane, SideSheet, Textarea, TextInputField, toaster} from "evergreen-ui";
-import {Form, useActionData, useSubmit} from "@remix-run/react";
+import {Form, useActionData, useNavigate, useSubmit} from "@remix-run/react";
 import {toast} from "react-toastify";
 import {$positionTypes} from "~/config";
 import {store} from "~/lib/mobx";
 import {observer} from "mobx-react";
 import checkIcon from "~/assets/icons/check.svg";
+import ImageInput from "~/components/ImageInput";
 
 const Position = ({ position, categories, currency }) => {
     const discount_types = {
@@ -23,7 +24,7 @@ const Position = ({ position, categories, currency }) => {
     const actionData = useActionData();
     const deleteFor = useRef();
 
-    // const [selected, setSelected] = useState(store.selectedPositions.has(position.id))
+    const [selected, setSelected] = useState(store.selectedPositions.has(position.id))
     const [isEditOpen, setIsEditOpen] = useState(false)
     const [isPropCreateShown, setIsPropCreateShown] = useState(false)
     const [isSureDeleteShown, setIsSureDeleteShown] = useState(false)
@@ -40,20 +41,22 @@ const Position = ({ position, categories, currency }) => {
     const [discountType, setDiscountType] = useState(position.discountType);
     const [properties, setProperties] = useState(position.properties);
 
+    const thumb = position.Media.length && position.Media.find(media => media.name === 'thumb') ? [
+        position.Media.find(media => media.name === 'thumb').filename
+    ] : []
+    const images = position.Media.length && position.Media.find(media => media.name === 'image') ?
+        position.Media.filter(media => media.name === 'image').map(image => image.filename) : []
+
     const [newPropKey, setNewPropKey] = useState('');
 
-    // const handleSelect = checked => {
-    //     setSelected(checked)
-    //
-    //     if(checked) {
-    //         store.selectPosition(position.id)
-    //     } else {
-    //         store.unselectPosition(position.id)
-    //     }
-    // }
+    useEffect(() => {
+        setSelected(store.selectedPositions.has(position.id))
+    }, [store.selectedPositions.size])
 
-    const handleSelect = () => {
-        if(store.selectedPositions.has(position.id)) {
+    const handleSelect = checked => {
+        setSelected(checked)
+
+        if(selected) {
             store.unselectPosition(position.id)
         } else {
             store.selectPosition(position.id)
@@ -111,20 +114,24 @@ const Position = ({ position, categories, currency }) => {
         }
     }, [actionData])
 
+    const getThumbPath = () => {
+        return thumb.length ? `https://www.inshop-online.com/storage/${position.uuid}/images/${thumb[0]}` : positionImg
+    }
+
     return (
         <div className={'position'}>
             <div className="position__col position__col_1">
-                {/*<Checkbox handleCheck={handleSelect} defaultChecked={selected} />*/}
-                <div className={'my-checkbox'}>
-                    <input type="checkbox" defaultChecked={store.selectedPositions.has(position.id)}/>
-                    <label onClick={handleSelect} className="checkbox">
-                        <img src={checkIcon}/>
-                    </label>
-                </div>
+                <Checkbox handleCheck={handleSelect} checked={selected} />
+                {/*<div className={'my-checkbox'}>*/}
+                {/*    <input type="checkbox" defaultChecked={store.selectedPositions.has(position.id)}/>*/}
+                {/*    <label onClick={handleSelect} className="checkbox">*/}
+                {/*        <img src={checkIcon}/>*/}
+                {/*    </label>*/}
+                {/*</div>*/}
             </div>
             <div className="position__col position__col_1 position__id position__number">{position.id}</div>
             <div className="position__col position__col_2">
-                <div className="position__img" style={{backgroundImage: `url(${positionImg})`}} />
+                <div className="position__img" style={{backgroundImage: `url(${getThumbPath()})`}} />
             </div>
             <div className="position__col position__col_4">{position.title}</div>
             <div className="position__col position__col_3">{position.subtitle}</div>
@@ -152,9 +159,16 @@ const Position = ({ position, categories, currency }) => {
                 <Pane padding={16} borderBottom="muted">
                     <Heading size={600}>Редактирование <b>#{position.id}</b></Heading>
                 </Pane>
-                <Form method='post' className="form">
+                <Form method='post' encType={'multipart/form-data'} className="form">
                     <input type="hidden" name={'_action'} value={'update'}/>
                     <input type="hidden" name={'id'} value={position.id}/>
+                    <Label marginBottom={4} display="block">
+                        Превью
+                    </Label>
+                    <ImageInput
+                        uuid={position.uuid}
+                        images={thumb}
+                    />
                     <TextInputField
                         className={'field'}
                         label="Название"
@@ -278,6 +292,8 @@ const Position = ({ position, categories, currency }) => {
                         </button>
                     </div>
 
+
+
                     <Dialog
                         isShown={isPropCreateShown}
                         title="Новое свойство"
@@ -299,7 +315,7 @@ const Position = ({ position, categories, currency }) => {
                             <div key={'property-' + i} className="property">
                                 <div className="property__col">
                                     <input
-                                        name={`properties[${i}][key]`}
+                                        name={`properties_keys`}
                                         value={property[0]}
                                         className={'field'}
                                         placeholder="Название..."
@@ -308,7 +324,7 @@ const Position = ({ position, categories, currency }) => {
                                 </div>
                                 <div className="property__col">
                                     <input
-                                        name={`properties[${i}][value]`}
+                                        name={`properties_values`}
                                         value={property[1]}
                                         onChange={(e) => handlePropUpdate(property[0], e.target.value)}
                                         className={'field'}
@@ -321,6 +337,15 @@ const Position = ({ position, categories, currency }) => {
                             </div>
                         )
                     })}
+
+                    <Label marginBottom={4} marginTop={4} display="block">
+                        Картинки
+                    </Label>
+                    <ImageInput
+                        uuid={position.uuid}
+                        images={images}
+                        multiple
+                    />
 
                     <div className="d-flex flex-end mt-1">
                         <button className="btn" type={'submit'}

@@ -9,19 +9,29 @@ export async function getPositions() {
 }
 
 export async function updatePosition(patch) {
-  try {
-    return await graphQLClient.mutate({
-      mutation: UPDATE_POSITION,
-      variables: {
-        patch
-      },
-      refetchQueries: [
-        {query: GET_POSITIONS},
-      ],
-    });
-  } catch (e) {
-    console.log(e)
-  }
+  console.log(patch)
+  return await graphQLClient.mutate({
+    mutation: UPDATE_POSITION,
+    variables: {
+      patch
+    },
+    refetchQueries: [
+      {query: GET_POSITIONS},
+    ],
+  });
+  // try {
+  //   return await graphQLClient.mutate({
+  //     mutation: UPDATE_POSITION,
+  //     variables: {
+  //       patch
+  //     },
+  //     refetchQueries: [
+  //       {query: GET_POSITIONS},
+  //     ],
+  //   });
+  // } catch (e) {
+  //   console.log(e)
+  // }
 
   return null
 }

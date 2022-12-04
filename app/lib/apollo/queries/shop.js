@@ -51,6 +51,7 @@ export const GET_SHOP = gql`
 export const GET_POSITIONS = gql`
     query Positions {
         positions {
+            uuid
             id
             type
             price
@@ -62,6 +63,11 @@ export const GET_POSITIONS = gql`
             subtitle
             inStock
             properties
+            
+            Media {
+                name
+                filename
+            }
 
             Category {
                 id

@@ -5,7 +5,7 @@ import { getCategories } from "~/models/category.server";
 
 import styles from "~/styles/global.css";
 import Positions from "~/components/Positions";
-import Layout from "~/components/Layout";
+import Layout from "~/components/Layout/Layout";
 import storageIcon from "~/assets/icons/black_storage.svg";
 import addIcon from "~/assets/icons/add.svg";
 import {useEffect, useRef, useState, useTransition} from "react";
@@ -14,6 +14,8 @@ import {Dialog, Heading, Label, Pane, SideSheet, Textarea, TextInputField} from 
 import plusIcon from "~/assets/icons/add.svg";
 import deleteIcon from "~/assets/icons/delete.svg";
 import {$positionTypes} from "~/config";
+import SelectBar from "~/components/SelectBar";
+import {store} from "~/lib/mobx";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
@@ -30,6 +32,13 @@ export const action = async ({ request }) => {
     const formData = await request.formData();
 
     let result = null;
+    const keys = formData.getAll('properties_keys');
+    let properties = {}
+
+    if(keys) {
+        const values = formData.getAll('properties_keys');
+        properties = Object.fromEntries(keys.map((_, i) => [keys[i], values[i]]))
+    }
 
     switch (formData.get('_action')) {
         case 'update':
@@ -46,7 +55,11 @@ export const action = async ({ request }) => {
                     priority: Number(formData.get('priority')),
                     discount: Number(formData.get('discount')),
                     discount_type: formData.get('discount_type'),
-                    // properties: Object.fromEntries(formData.get('properties')),
+                    properties,
+                },
+                media: {
+                    thumb_name: formData.get('thumb_name'),
+                    images: formData.getAll('images_names'),
                 }
             });
             break;
@@ -62,7 +75,7 @@ export const action = async ({ request }) => {
                 priority: Number(formData.get('priority')),
                 discount: Number(formData.get('discount')),
                 discount_type: formData.get('discount_type'),
-                // properties: Object.fromEntries(formData.get('properties')),
+                properties,
             });
             break;
         case "delete":
@@ -139,6 +152,8 @@ export default function Storage() {
 
     useEffect(() => {
         if(actionData && actionData.data) {
+            store.clearSelectedPositions()
+
             actionData.data.updatePosition && toast('Изменения сохранены')
             actionData.data.deletePosition && toast('Позиция удалена')
             actionData.data.deletePositions && toast('Позиции удалены')
@@ -178,6 +193,7 @@ export default function Storage() {
             positions={data.positions.data.positions}
             categories={categories}
         />
+
         <SideSheet
             width={500}
             isShown={isCreateOpen}
@@ -187,7 +203,7 @@ export default function Storage() {
             <Pane padding={16} borderBottom="muted">
                 <Heading size={600}>Добавить позицию</Heading>
             </Pane>
-            <Form method='post' className="form">
+            <Form method='post' encType={'multipart/form-data'} className="form">
                 <input type="hidden" name={'_action'} value={'create'}/>
                 <TextInputField
                     className={'field'}
@@ -334,7 +350,7 @@ export default function Storage() {
                         <div key={'property-' + i} className="property">
                             <div className="property__col">
                                 <input
-                                    name={`properties[${i}][key]`}
+                                    name={`properties_keys`}
                                     value={property[0]}
                                     className={'field'}
                                     placeholder="Название..."
@@ -343,7 +359,7 @@ export default function Storage() {
                             </div>
                             <div className="property__col">
                                 <input
-                                    name={`properties[${i}][value]`}
+                                    name={`properties_values`}
                                     value={property[1]}
                                     onChange={(e) => handlePropUpdate(property[0], e.target.value)}
                                     className={'field'}

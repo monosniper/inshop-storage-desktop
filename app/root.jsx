@@ -1,3 +1,5 @@
+import {useLocation} from "@remix-run/react";
+
 const {
   Links,
   LiveReload,
@@ -7,7 +9,7 @@ const {
   ScrollRestoration,
 } = require("@remix-run/react");
 
-import toastStyles from 'react-toastify/dist/ReactToastify.css';
+const toastStyles = require('react-toastify/dist/ReactToastify.css');
 
 
 export const meta = () => ({
@@ -43,7 +45,10 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
+      <Outlet />
+        {/*<AnimatePresence mode={'wait'} initial={false}>*/}
+        {/*  <Outlet />*/}
+        {/*</AnimatePresence>*/}
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

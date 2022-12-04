@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from "../assets/img/logo.svg";
+import logo from "../../assets/img/logo.svg";
 
-import userImg from '../assets/img/user.png'
+import userImg from '../../assets/img/user.png'
 import {Avatar} from "evergreen-ui";
 
 const Header = () => {

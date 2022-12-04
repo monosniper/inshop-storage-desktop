@@ -1,6 +1,7 @@
 import globalStyles from "~/styles/global.css";
 import styles from "~/styles/index.css";
-import Layout from "~/components/Layout";
+import Layout from "~/components/Layout/Layout";
+import {observer} from "mobx-react";
 
 export function links() {
     return [
@@ -9,10 +10,12 @@ export function links() {
     ];
 }
 
-export default function Index() {
-  return (
-    <Layout>
+const Index = observer(() => {
+    return (
+        <Layout>
 
-    </Layout>
-  );
-}
+        </Layout>
+    );
+})
+
+export default Index

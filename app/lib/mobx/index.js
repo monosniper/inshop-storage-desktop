@@ -3,6 +3,7 @@ import {makeAutoObservable} from "mobx";
 class Store {
     selectedPositions = new Set()
     isSelectBarShown = false
+    loaderRef = null
 
     constructor() {
         makeAutoObservable(this)
@@ -22,6 +23,10 @@ class Store {
 
     clearSelectedPositions() {
         this.selectedPositions.clear()
+    }
+
+    setLoaderRef(ref) {
+        this.loaderRef = ref
     }
 }
 

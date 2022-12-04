@@ -1,11 +1,11 @@
 import React from 'react';
 
-import homeIcon from '../assets/icons/nav/home.svg'
-import storageIcon from '../assets/icons/nav/storage.svg'
-import shopIcon from '../assets/icons/nav/shop.svg'
-import libraryIcon from '../assets/icons/nav/library.svg'
-import walletIcon from '../assets/icons/nav/wallet.svg'
-import clientsIcon from '../assets/icons/nav/clients.svg'
+import homeIcon from '../../assets/icons/nav/home.svg'
+import storageIcon from '../../assets/icons/nav/storage.svg'
+import shopIcon from '../../assets/icons/nav/shop.svg'
+import libraryIcon from '../../assets/icons/nav/library.svg'
+import walletIcon from '../../assets/icons/nav/wallet.svg'
+import clientsIcon from '../../assets/icons/nav/clients.svg'
 
 const Footer = () => {
     return (

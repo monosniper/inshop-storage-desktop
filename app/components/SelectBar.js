@@ -4,13 +4,17 @@ import deleteIcon from '~/assets/icons/black_delete.svg'
 import closeIcon from '~/assets/icons/close.svg'
 import {observer} from "mobx-react";
 import {store} from "~/lib/mobx";
-import {Form, useActionData, useSubmit} from "@remix-run/react";
+import {Form, useActionData, useLocation, useSubmit} from "@remix-run/react";
 import {Dialog} from "evergreen-ui";
 
 const SelectBar = () => {
     const deleteForm = useRef()
     const submit = useSubmit()
     const actionData = useActionData()
+    const location = useLocation()
+    const page_with_select = [
+        '/storage'
+    ]
     const [isSureDeleteShown, setIsSureDeleteShown] = useState(false)
 
     const handleClose = () => {
@@ -30,8 +34,16 @@ const SelectBar = () => {
     }, [actionData])
 
     useEffect(() => {
-        store.setIsSelectBarShown(!!store.selectedPositions.size)
-    }, [store.selectedPositions.size])
+        if(page_with_select.includes(location.pathname)) {
+            store.setIsSelectBarShown(!!store.selectedPositions.size)
+        } else {
+            store.setIsSelectBarShown(false)
+        }
+    }, [store.selectedPositions.size, location])
+
+    useEffect(() => {
+        page_with_select.includes(location.pathname) && store.setIsSelectBarShown(!!store.selectedPositions.size)
+    }, [])
 
     return (
         <div className={'select-bar ' + (store.isSelectBarShown ? '' : 'select-bar_hidden')}>
