@@ -41,10 +41,10 @@ const Position = ({ position, categories, currency }) => {
     const [discountType, setDiscountType] = useState(position.discountType);
     const [properties, setProperties] = useState(position.properties);
 
-    const thumb = position.Media.length && position.Media.find(media => media.name === 'thumb') ? [
+    const thumb = position.Media && position.Media.length && position.Media.find(media => media.name === 'thumb') ? [
         position.Media.find(media => media.name === 'thumb').filename
     ] : []
-    const images = position.Media.length && position.Media.find(media => media.name === 'image') ?
+    const images = position.Media && position.Media.length && position.Media.find(media => media.name === 'image') ?
         position.Media.filter(media => media.name === 'image').map(image => image.filename) : []
 
     const [newPropKey, setNewPropKey] = useState('');
