@@ -2,10 +2,13 @@ import globalStyles from "~/styles/global.css";
 import styles from "~/styles/index.css";
 import Layout from "~/components/Layout/Layout";
 import {observer} from "mobx-react";
-import {json} from "@remix-run/node";
+import {commitSession, getSession} from "~/sessions";
+import {json, redirect} from "@remix-run/node";
 import {getShops} from "~/models/shop.server";
-import {requireUser} from "~/utils/session.server";
-import {getSession} from "~/sessions";
+
+export const action = async ({ request }) => {
+    return null
+}
 
 export function links() {
     return [
@@ -15,25 +18,24 @@ export function links() {
 }
 
 export const loader = async ({ request }) => {
-    const user = await requireUser(request)
-    const session = await getSession(request.headers.get('Cookie'))
+    const { data: session } = await getSession(request.headers.get("Cookie"))
 
-    let shops = await getShops(user.id);
+    let shops = await getShops(session.user.id);
     shops = shops.data.shops
 
     return json({
-        user,
-        domain: session.get('domain'),
+        user: session.user,
+        domain: session.domain,
         shops
     });
 };
 
-const Index = observer(() => {
+const NewShop = observer(() => {
     return (
         <Layout>
-
+            NewShop
         </Layout>
     );
 })
 
-export default Index
+export default NewShop

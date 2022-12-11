@@ -1,8 +1,8 @@
 import React, {useEffect, useRef} from 'react';
 import Header from "~/components/Layout/Header";
 import Navigation from "~/components/Layout/Navigation";
-import {ToastContainer} from "react-toastify";
-import {useLocation, useTransition} from "@remix-run/react";
+import {toast, ToastContainer} from "react-toastify";
+import {useLoaderData, useLocation, useTransition} from "@remix-run/react";
 import LoadingBar from 'react-top-loading-bar'
 import {motion} from 'framer-motion'
 import SelectBar from "~/components/SelectBar";
@@ -10,24 +10,32 @@ import SelectBar from "~/components/SelectBar";
 const Layout = ({ children }) => {
     const loadingRef = useRef()
     const transition = useTransition()
+    const loaderData = useLoaderData()
 
     useEffect(() => {
         if(transition.state === 'loading') {
             loadingRef.current.continuousStart()
         }
         transition.state === 'idle' && loadingRef.current.complete()
+
+        if(loaderData.noties) {
+            toast.dismiss()
+            loaderData.noties.forEach(noty => {
+                toast(noty.message)
+            })
+        }
     }, [transition.state])
 
     return (
         <div className={'wrapper container'}>
             <Navigation />
             <div className={'wrapper__right'}>
-                <Header />
+                {loaderData && <Header {...loaderData} />}
                 <motion.main
                     key={useLocation().pathname}
-                    initial={{x: '-10%', opacity: 0}}
+                    initial={{x: '10%', opacity: 0}}
                     animate={{opacity: 1, x: '0'}}
-                    exit={{y: '-10%', opacity: 0}}
+                    exit={{x: '-10%', opacity: 0}}
                     transition={{duration: 0.3}}
                 >
                     {children}

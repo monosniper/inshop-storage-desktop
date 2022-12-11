@@ -1,4 +1,5 @@
-import {useLocation} from "@remix-run/react";
+import {getSession} from "~/sessions";
+import {json} from "@remix-run/node";
 
 const {
   Links,
@@ -11,12 +12,13 @@ const {
 
 const toastStyles = require('react-toastify/dist/ReactToastify.css');
 
-
-export const meta = () => ({
-  charset: "utf-8",
-  title: "New Remix App",
-  viewport: "width=device-width,initial-scale=1",
-});
+export const meta = () => {
+  return {
+    charset: "utf-8",
+    title: "Inshop Storage",
+    viewport: "width=device-width,initial-scale=1",
+  }
+};
 
 export const links = () => {
   return [
@@ -45,10 +47,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-      <Outlet />
-        {/*<AnimatePresence mode={'wait'} initial={false}>*/}
-        {/*  <Outlet />*/}
-        {/*</AnimatePresence>*/}
+        <Outlet />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

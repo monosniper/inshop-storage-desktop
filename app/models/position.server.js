@@ -1,15 +1,14 @@
-import {graphQLClient} from "~/lib/apollo";
+import {graphQLClient, newGraphQLClient} from "~/lib/apollo";
 import {GET_POSITIONS} from "~/lib/apollo/queries/shop";
 import {CREATE_POSITION, DELETE_POSITION, DELETE_POSITIONS, UPDATE_POSITION} from "~/lib/apollo/mutations/position";
 
-export async function getPositions() {
-  return await graphQLClient.query({
+export async function getPositions(domain) {
+  return await newGraphQLClient(domain).query({
     query: GET_POSITIONS
   });
 }
 
 export async function updatePosition(patch) {
-  console.log(patch)
   return await graphQLClient.mutate({
     mutation: UPDATE_POSITION,
     variables: {
@@ -19,19 +18,6 @@ export async function updatePosition(patch) {
       {query: GET_POSITIONS},
     ],
   });
-  // try {
-  //   return await graphQLClient.mutate({
-  //     mutation: UPDATE_POSITION,
-  //     variables: {
-  //       patch
-  //     },
-  //     refetchQueries: [
-  //       {query: GET_POSITIONS},
-  //     ],
-  //   });
-  // } catch (e) {
-  //   console.log(e)
-  // }
 
   return null
 }

@@ -14,7 +14,7 @@ const Navigation = () => {
 
     const routes = [
         {
-            pathname: '/',
+            pathname: '/home',
             icon: homeIcon,
             title: 'Дом',
         },

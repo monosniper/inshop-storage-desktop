@@ -48,6 +48,35 @@ export const GET_SHOP = gql`
     }
 `
 
+export const GET_SHOPS = gql`
+    query Shops($userId: ID!) {
+        shops(userId: $userId) {
+            options
+            Domain {
+                name
+            }
+            Modules {
+                slug
+
+                Shop_Module {
+                    isActive
+                }
+            }
+            Colors {
+                slug
+
+                Shop_Color {
+                    value
+                }
+            }
+            Filters {
+                id
+                slug
+            }
+        }
+    }
+`
+
 export const GET_POSITIONS = gql`
     query Positions {
         positions {

@@ -4,9 +4,14 @@ class Store {
     selectedPositions = new Set()
     isSelectBarShown = false
     loaderRef = null
+    user = null
 
     constructor() {
         makeAutoObservable(this)
+    }
+
+    setUser(data) {
+        this.user = data
     }
 
     setIsSelectBarShown(bool) {

@@ -8,24 +8,51 @@ import Positions from "~/components/Positions";
 import Layout from "~/components/Layout/Layout";
 import storageIcon from "~/assets/icons/black_storage.svg";
 import addIcon from "~/assets/icons/add.svg";
-import {useEffect, useRef, useState, useTransition} from "react";
+import {useEffect, useRef, useState} from "react";
 import {toast} from "react-toastify";
 import {Dialog, Heading, Label, Pane, SideSheet, Textarea, TextInputField} from "evergreen-ui";
 import plusIcon from "~/assets/icons/add.svg";
 import deleteIcon from "~/assets/icons/delete.svg";
 import {$positionTypes} from "~/config";
-import SelectBar from "~/components/SelectBar";
 import {store} from "~/lib/mobx";
+import {getSession} from "~/sessions";
+import {getShops} from "~/models/shop.server";
+import {requireUser} from "~/utils/session.server";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
 }
 
-export const loader = async () => {
-  return json({
-    categories: await getCategories(),
-    positions: await getPositions(),
-  });
+export const loader = async ({ request }) => {
+    const { data: session } = await getSession(request.headers.get("Cookie"))
+
+    const user = await requireUser(request)
+    let positions = []
+    const noties = []
+
+    const { domain } = session
+
+    if(domain) {
+        positions = await getPositions(domain)
+        positions = positions.data.positions
+    } else {
+        noties.push({
+            type: 'warning',
+            message: 'Необходимо выбрать магазин'
+        })
+    }
+
+    let shops = await getShops(user.id);
+    shops = shops.data.shops
+
+    return json({
+        categories: await getCategories(),
+        positions,
+        shops,
+        domain,
+        user,
+        noties,
+    });
 };
 
 export const action = async ({ request }) => {
@@ -157,6 +184,7 @@ export default function Storage() {
             actionData.data.updatePosition && toast('Изменения сохранены')
             actionData.data.deletePosition && toast('Позиция удалена')
             actionData.data.deletePositions && toast('Позиции удалены')
+
             if(actionData.data.createPosition) {
                 setIsCreateOpen(false)
                 toast('Позиция создана успешно')
@@ -190,7 +218,7 @@ export default function Storage() {
             </div>
         </div>
         <Positions
-            positions={data.positions.data.positions}
+            positions={data.positions}
             categories={categories}
         />
 
