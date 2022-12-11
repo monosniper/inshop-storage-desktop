@@ -12,7 +12,7 @@ export async function login(code, request) {
         grant_type: 'authorization_code',
         code
     }).then(async (rs) => {
-        return $api.get('/api/user', {
+        return $api.get('/user', {
             headers: {
                 Authorization: "Bearer " + rs.data.access_token
             }
