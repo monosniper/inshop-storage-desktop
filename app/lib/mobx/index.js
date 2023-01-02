@@ -1,7 +1,7 @@
-import {makeAutoObservable} from "mobx";
+import {makeAutoObservable, toJS} from "mobx";
 
 class Store {
-    selectedPositions = new Set()
+    selectedItems = []
     isSelectBarShown = false
     loaderRef = null
     user = null
@@ -18,16 +18,20 @@ class Store {
         this.isSelectBarShown = bool
     }
 
-    selectPosition(id) {
-        this.selectedPositions.add(id)
+    selectItem(key, name) {
+        this.selectedItems.push({key, name})
     }
 
-    unselectPosition(id) {
-        this.selectedPositions.delete(id)
+    unselectItem(key, name) {
+        this.selectedItems = this.selectedItems.filter(i => i.key !== key && i.name === name)
     }
 
-    clearSelectedPositions() {
-        this.selectedPositions.clear()
+    hasSelectedItem(key, name) {
+        return this.selectedItems.findIndex(i => i.key === key && i.name === name) !== -1
+    }
+
+    clearSelectedItems() {
+        this.selectedItems.clear()
     }
 
     setLoaderRef(ref) {

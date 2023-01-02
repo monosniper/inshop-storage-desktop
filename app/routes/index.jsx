@@ -17,14 +17,14 @@ export function links() {
 export const loader = async ({ request }) => {
     const user = await requireUser(request)
     const session = await getSession(request.headers.get('Cookie'))
-
+    console.log(user)
     let shops = await getShops(user.id);
-    shops = shops.data.shops
+    // shops = shops.data.shops
 
     return json({
         user,
         domain: session.get('domain'),
-        shops
+        shops: []
     });
 };
 

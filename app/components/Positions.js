@@ -3,7 +3,7 @@ import Position from "~/components/Position";
 
 const Positions = ({ positions, categories }) => {
     return (
-        <div className={'positions'}>
+        <div className={'rows'}>
             {positions.map(position => (
                 <Position
                     position={position}

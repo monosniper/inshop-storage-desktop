@@ -13,12 +13,13 @@ const SelectBar = () => {
     const actionData = useActionData()
     const location = useLocation()
     const page_with_select = [
-        '/storage'
+        '/storage',
+        '/storage/categories'
     ]
     const [isSureDeleteShown, setIsSureDeleteShown] = useState(false)
 
     const handleClose = () => {
-        store.clearSelectedPositions()
+        store.clearSelectedItems()
         store.setIsSelectBarShown(false)
     }
 
@@ -28,21 +29,21 @@ const SelectBar = () => {
     }
 
     useEffect(() => {
-        if(actionData && actionData.data && actionData.data.deletePositions) {
+        if(actionData && actionData.data && actionData.data.deleteItems) {
             setIsSureDeleteShown(false)
         }
     }, [actionData])
 
     useEffect(() => {
         if(page_with_select.includes(location.pathname)) {
-            store.setIsSelectBarShown(!!store.selectedPositions.size)
+            store.setIsSelectBarShown(!!store.selectedItems.length)
         } else {
             store.setIsSelectBarShown(false)
         }
-    }, [store.selectedPositions.size, location])
+    }, [store.selectedItems.length, location])
 
     useEffect(() => {
-        page_with_select.includes(location.pathname) && store.setIsSelectBarShown(!!store.selectedPositions.size)
+        page_with_select.includes(location.pathname) && store.setIsSelectBarShown(!!store.selectedItems.length)
     }, [])
 
     return (
@@ -56,16 +57,16 @@ const SelectBar = () => {
                 cancelLabel="Отмена"
                 onConfirm={handleDelete}
             >
-                {store.selectedPositions.size} позиции будет удалены безвозвратно
+                {store.selectedItems.length} элементов будут удалены безвозвратно
                 <Form ref={deleteForm} method="post">
                     <input type="hidden" name={'_action'} value={'deleteMany'}/>
-                    {[...store.selectedPositions].map(id => <input key={'position-ids-'+id} type="hidden" name={'position_ids'} value={id} />)}
+                    {[...store.selectedItems].map(id => <input key={'Item-ids-'+id} type="hidden" name={'Item_ids'} value={id} />)}
                 </Form>
             </Dialog>
 
             <div className="container select-bar__wrapper">
                 <div className="select-bar__col">
-                    {store.selectedPositions.size} элемента(ов) выбрано
+                    {store.selectedItems.length} элемента(ов) выбрано
                 </div>
                 <div className="select-bar__col">
                     <button onClick={() => setIsSureDeleteShown(true)} className="select-bar__btn select-bar__btn_min">

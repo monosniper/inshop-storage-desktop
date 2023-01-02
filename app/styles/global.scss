@@ -5,6 +5,7 @@
 @import "components/Navigation";
 @import "components/Header";
 @import "components/SelectBar";
+@import "components/SubNav";
 @import "filepond/dist/filepond.min.css";
 @import "@draft-js-plugins/static-toolbar/lib/plugin.css";
 @import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
@@ -25,13 +26,35 @@ body {
   background: $bg;
 }
 
-.positions {
+.link {
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  color: $pink;
+
+  &:hover::after {
+    width: 100%;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    height: 2px;
+    width: 0;
+    left: 0;
+    transition: .1s ease-in;
+    background: $pink;
+  }
+}
+
+.rows {
   padding: 45px 0;
   overflow-x: scroll;
   max-width: 100%;
 }
 
-.position {
+.row {
   display: flex;
   gap: 5px;
 
@@ -44,7 +67,12 @@ body {
   font-size: 16px;
   padding: 5px 10px 5px 5px;
 
-  &+.position {
+  &__tooltip-thumb {
+    width: 60px;
+    height: 60px;
+  }
+
+  &+.row {
     margin-top: 5px;
   }
 
@@ -85,7 +113,7 @@ body {
     transition: .1s ease-in;
     cursor: pointer;
 
-    &.position__btn_disabled {
+    &.row__btn_disabled {
       pointer-events: none;
       opacity: 0.5;
     }
@@ -98,11 +126,11 @@ body {
       width: 20px;
     }
 
-    &.position__btn_edit {
+    &.row__btn_edit {
       background: $lime;
     }
 
-    &.position__btn_delete {
+    &.row__btn_delete {
       background: $red;
     }
   }
@@ -113,16 +141,16 @@ body {
     align-items: center;
     justify-content: center;
 
-    &.position__col_1 {
+    &.row__col_1 {
       flex-basis: 5%;
     }
-    &.position__col_2 {
+    &.row__col_2 {
       flex-basis: 10%;
     }
-    &.position__col_3 {
+    &.row__col_3 {
       flex-basis: 15%;
     }
-    &.position__col_4 {
+    &.row__col_4 {
       flex-basis: 20%;
     }
   }

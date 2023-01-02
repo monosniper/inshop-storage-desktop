@@ -101,6 +101,12 @@ export const GET_POSITIONS = gql`
             Category {
                 id
                 title
+                uuid
+            
+                Media {
+                    name
+                    filename
+                }
             }
         }
     }
@@ -111,6 +117,12 @@ export const GET_CATEGORIES = gql`
         categories {
             id
             title
+            uuid
+            
+            Media {
+                name
+                filename
+            }
         }
     }
 `

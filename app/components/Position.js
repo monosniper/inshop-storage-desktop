@@ -5,14 +5,15 @@ import editIcon from '../assets/icons/edit.svg'
 import deleteIcon from '../assets/icons/delete.svg'
 import plusIcon from '../assets/icons/add.svg'
 import Checkbox from "~/components/Checkbox";
-import {Dialog, Heading, Label, Pane, SideSheet, Textarea, TextInputField, toaster} from "evergreen-ui";
-import {Form, useActionData, useNavigate, useSubmit} from "@remix-run/react";
+import {Dialog, Heading, Label, Pane, SideSheet, Textarea, TextInputField, toaster, Tooltip} from "evergreen-ui";
+import {Form, Link, useActionData, useLocation, useNavigate, useSubmit} from "@remix-run/react";
 import {toast} from "react-toastify";
 import {$positionTypes} from "~/config";
 import {store} from "~/lib/mobx";
 import {observer} from "mobx-react";
 import checkIcon from "~/assets/icons/check.svg";
 import ImageInput from "~/components/ImageInput";
+import {$routes} from "~/utils/config";
 
 const Position = ({ position, categories, currency }) => {
     const discount_types = {
@@ -23,8 +24,9 @@ const Position = ({ position, categories, currency }) => {
     const submit = useSubmit();
     const actionData = useActionData();
     const deleteFor = useRef();
+    const location = useLocation();
 
-    const [selected, setSelected] = useState(store.selectedPositions.has(position.id))
+    const [selected, setSelected] = useState(store.hasSelectedItem(position.id, location.pathname))
     const [isEditOpen, setIsEditOpen] = useState(false)
     const [isPropCreateShown, setIsPropCreateShown] = useState(false)
     const [isSureDeleteShown, setIsSureDeleteShown] = useState(false)
@@ -35,7 +37,7 @@ const Position = ({ position, categories, currency }) => {
     const [description, setDescription] = useState(position.description);
     const [price, setPrice] = useState(position.price);
     const [inStock, setInStock] = useState(position.inStock);
-    const [categoryId, setCategoryId] = useState(position.Category.Id);
+    const [categoryId, setCategoryId] = useState(position.Category?.Id);
     const [priority, setPriority] = useState(position.priority);
     const [discount, setDiscount] = useState(position.discount);
     const [discountType, setDiscountType] = useState(position.discountType);
@@ -47,19 +49,23 @@ const Position = ({ position, categories, currency }) => {
     const images = position.Media && position.Media.length && position.Media.find(media => media.name === 'image') ?
         position.Media.filter(media => media.name === 'image').map(image => image.filename) : []
 
+    const categoryImage = position.Category && position.Category.Media && position.Category.Media.length && position.Category.Media.find(media => media.name === 'image') ? [
+        position.Category.Media.find(media => media.name === 'image').filename
+    ] : []
+
     const [newPropKey, setNewPropKey] = useState('');
 
     useEffect(() => {
-        setSelected(store.selectedPositions.has(position.id))
-    }, [store.selectedPositions.size])
+        setSelected(store.hasSelectedItem(position.id, location.pathname))
+    }, [store.selectedItems.length])
 
     const handleSelect = checked => {
         setSelected(checked)
 
         if(selected) {
-            store.unselectPosition(position.id)
+            store.unselectItem(position.id, location.pathname)
         } else {
-            store.selectPosition(position.id)
+            store.selectItem(position.id, location.pathname)
         }
     }
 
@@ -114,39 +120,45 @@ const Position = ({ position, categories, currency }) => {
         }
     }, [actionData])
 
-    const getThumbPath = () => {
-        return thumb.length ? `https://www.inshop-online.com/storage/${position.uuid}/images/${thumb[0]}` : positionImg
+    const getThumbPath = (uuid=position.uuid, image = thumb) => {
+        return thumb ? `https://www.inshop-online.com/storage/${uuid}/images/${image[0]}` : positionImg
     }
-
+    console.log(position.Category)
     return (
-        <div className={'position'}>
-            <div className="position__col position__col_1">
+        <div className={'row'}>
+            <div className="row__col row__col_1">
                 <Checkbox handleCheck={handleSelect} checked={selected} />
                 {/*<div className={'my-checkbox'}>*/}
-                {/*    <input type="checkbox" defaultChecked={store.selectedPositions.has(position.id)}/>*/}
+                {/*    <input type="checkbox" defaultChecked={store.selectedItems.has(position.id)}/>*/}
                 {/*    <label onClick={handleSelect} className="checkbox">*/}
                 {/*        <img src={checkIcon}/>*/}
                 {/*    </label>*/}
                 {/*</div>*/}
             </div>
-            <div className="position__col position__col_1 position__id position__number">{position.id}</div>
-            <div className="position__col position__col_2">
-                <div className="position__img" style={{backgroundImage: `url(${getThumbPath()})`}} />
+            <div className="row__col row__col_1 row__id row__number">{position.id}</div>
+            <div className="row__col row__col_2">
+                <div className="row__img" style={{backgroundImage: `url(${getThumbPath()})`}} />
             </div>
-            <div className="position__col position__col_4">{position.title}</div>
-            <div className="position__col position__col_3">{position.subtitle}</div>
-            <div className="position__col position__col_3">{position.Category.name}</div>
-            <div className="position__col position__col_1 position__number position__price">
+            <div className="row__col row__col_4">{position.title}</div>
+            <div className="row__col row__col_3">{position.subtitle}</div>
+            <div className="row__col row__col_3">
+                <Tooltip content={<div className={'row__tooltip-thumb'} style={{backgroundImage: 'url('+getThumbPath(position.Category?.uuid, categoryImage)+')'}}></div>} appearance="card">
+                    <Link to={$routes.storage.categories + '#' + position.Category?.id} className={'link'}>
+                        {position.Category?.title}
+                    </Link>
+                </Tooltip>
+            </div>
+            <div className="row__col row__col_1 row__number row__price">
                 <span>{position.price}{currency}</span>
-                {position.discount && <span className={'position__discount'}>-{position.discount}{discount_types[position.discount_type]}</span>}
+                {position.discount && <span className={'row__discount'}>-{position.discount}{discount_types[position.discount_type]}</span>}
             </div>
-            <div className="position__col position__col_1 position__number">{position.inStock}</div>
-            <div className="position__col position__col_1 position__number">{position.priority}</div>
-            <div className="position__col position__col_2 position__btns">
-                <div className={"position__btn position__btn_edit " + (store.isSelectBarShown ? 'position__btn_disabled' : '')} onClick={handleEdit}>
+            <div className="row__col row__col_1 row__number">{position.inStock}</div>
+            <div className="row__col row__col_1 row__number">{position.priority}</div>
+            <div className="row__col row__col_2 row__btns">
+                <div className={"row__btn row__btn_edit " + (store.isSelectBarShown ? 'row__btn_disabled' : '')} onClick={handleEdit}>
                     <img src={editIcon} />
                 </div>
-                <div className={"position__btn position__btn_delete " + (store.isSelectBarShown ? 'position__btn_disabled' : '')} onClick={handlePreDelete}>
+                <div className={"row__btn row__btn_delete " + (store.isSelectBarShown ? 'row__btn_disabled' : '')} onClick={handlePreDelete}>
                     <img src={deleteIcon} />
                 </div>
             </div>

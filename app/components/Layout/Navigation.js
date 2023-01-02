@@ -36,7 +36,7 @@ const Navigation = () => {
         {
             pathname: '/',
             icon: walletIcon,
-            title: 'Кошелёк',
+            title: 'Финансы',
         },
         {
             pathname: '/',
@@ -48,8 +48,8 @@ const Navigation = () => {
     return (
         <div className={'nav'}>
             {routes.map(route => (
-                <Tooltip content={route.title} position={Position.RIGHT} showDelay={200}>
-                    <Link key={route.pathname} to={route.pathname} className={"nav-item " + (location.pathname === route.pathname ? 'nav-item_active' : '')}>
+                <Tooltip key={route.pathname} content={route.title} position={Position.RIGHT} showDelay={200}>
+                    <Link to={route.pathname} className={"nav-item " + (location.pathname === route.pathname ? 'nav-item_active' : '')}>
                         <img src={route.icon}/>
                     </Link>
                     {/*<a key={route.pathname} href={route.pathname} className={"nav-item " + (location.pathname === route.pathname ? 'nav-item_active' : '')}>*/}

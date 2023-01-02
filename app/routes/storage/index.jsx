@@ -1,4 +1,4 @@
-import {json, redirect} from "@remix-run/node";
+import {json} from "@remix-run/node";
 import {Form, useActionData, useLoaderData} from "@remix-run/react";
 import {createPosition, deletePosition, deletePositions, getPositions, updatePosition} from "~/models/position.server";
 import { getCategories } from "~/models/category.server";
@@ -7,7 +7,6 @@ import styles from "~/styles/global.css";
 import Positions from "~/components/Positions";
 import Layout from "~/components/Layout/Layout";
 import storageIcon from "~/assets/icons/black_storage.svg";
-import addIcon from "~/assets/icons/add.svg";
 import {useEffect, useRef, useState} from "react";
 import {toast} from "react-toastify";
 import {Dialog, Heading, Label, Pane, SideSheet, Textarea, TextInputField} from "evergreen-ui";
@@ -18,6 +17,8 @@ import {store} from "~/lib/mobx";
 import {getSession} from "~/sessions";
 import {getShops} from "~/models/shop.server";
 import {requireUser} from "~/utils/session.server";
+import positionsIcon from '~/assets/icons/nav/storage.svg';
+import categoriesIcon from '~/assets/icons/nav/storage/categories.svg';
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
@@ -28,6 +29,7 @@ export const loader = async ({ request }) => {
 
     const user = await requireUser(request)
     let positions = []
+    let categories = []
     const noties = []
 
     const { domain } = session
@@ -35,6 +37,9 @@ export const loader = async ({ request }) => {
     if(domain) {
         positions = await getPositions(domain)
         positions = positions.data.positions
+
+        categories = await getCategories(domain)
+        categories = categories.data.categories
     } else {
         noties.push({
             type: 'warning',
@@ -46,12 +51,24 @@ export const loader = async ({ request }) => {
     shops = shops.data.shops
 
     return json({
-        categories: await getCategories(),
+        categories,
         positions,
         shops,
         domain,
         user,
         noties,
+        subNav: [
+            {
+                pathname: '/storage',
+                icon: positionsIcon,
+                title: 'Позиции',
+            },
+            {
+                pathname: '/storage/categories',
+                icon: categoriesIcon,
+                title: 'Категории',
+            },
+        ],
     });
 };
 
@@ -121,7 +138,7 @@ export default function Storage() {
     const actionData = useActionData();
     const [isCreateOpen, setIsCreateOpen] = useState(false)
 
-    const categories = data.categories.data.categories
+    const categories = data.categories
     const propField = useRef()
 
     const [isPropCreateShown, setIsPropCreateShown] = useState(false)
@@ -179,7 +196,7 @@ export default function Storage() {
 
     useEffect(() => {
         if(actionData && actionData.data) {
-            store.clearSelectedPositions()
+            store.clearSelectedItems()
 
             actionData.data.updatePosition && toast('Изменения сохранены')
             actionData.data.deletePosition && toast('Позиция удалена')
@@ -212,7 +229,7 @@ export default function Storage() {
           </div>
             <div className="title__right">
                 <button onClick={handleCreate} className="btn">
-                    <img src={addIcon}/>
+                    <img src={plusIcon}/>
                     Добавить позицию
                 </button>
             </div>

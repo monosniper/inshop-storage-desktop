@@ -1,26 +1,36 @@
 import {
     redirect,
 } from "@remix-run/node";
-import {$api, $server} from "~/lib/api";
+import {$api, $server, API_URL} from "~/lib/api";
 import {commitSession, getSession} from "~/sessions";
 
 export async function login(code, request) {
-    return $server.post('/oauth/token', {
-        client_id: process.env.OAUTH_CLIENT_ID,
-        client_secret: process.env.OAUTH_CLIENT_SECRET,
-        redirect_uri: process.env.OAUTH_CLIENT_REDIRECT_URI,
-        grant_type: 'authorization_code',
-        code
-    }).then(async (rs) => {
-        return $api.get('/user', {
+    return fetch(API_URL + '/oauth/token', {
+        method: 'post',
+        body: JSON.stringify({
+            client_id: process.env.OAUTH_CLIENT_ID,
+            client_secret: process.env.OAUTH_CLIENT_SECRET,
+            redirect_uri: process.env.OAUTH_CLIENT_REDIRECT_URI,
+            grant_type: 'authorization_code',
+            code
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then((rs) => {
+        return rs.json()
+    }).then((data) => {
+        return fetch(API_URL + '/api/user', {
             headers: {
-                Authorization: "Bearer " + rs.data.access_token
+                Authorization: "Bearer " + data.access_token
             }
-        }).then(async (rs_) => {
+        }).then((rs_) => {
+            return rs_.json();
+        }).then(user => {
             return Promise.resolve({
-                user: rs_.data,
-                access_token: rs.data.access_token,
-                refresh_token: rs.data.refresh_token,
+                user,
+                access_token: data.access_token,
+                refresh_token: data.refresh_token,
             });
         })
     }).catch((err) => {

@@ -1,6 +1,3 @@
-import {getSession} from "~/sessions";
-import {json} from "@remix-run/node";
-
 const {
   Links,
   LiveReload,
