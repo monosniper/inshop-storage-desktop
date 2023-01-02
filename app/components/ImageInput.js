@@ -4,7 +4,7 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import {$api, $apiRoutes, API_URL} from "~/lib/api";
 
-const ImageInput = ({ uuid, images=[], multiple=false, prefix=false }) => {
+const ImageInput = ({ uuid, images=[], multiple=false, prefix=false, name }) => {
     const [thumb_name, setThumbName] = useState(images.length ? images[0] : null)
     const [images_names, setImagesNames] = useState(images)
     const [files, setFiles] = useState(images
@@ -80,7 +80,7 @@ const ImageInput = ({ uuid, images=[], multiple=false, prefix=false }) => {
         <>
             {multiple ? images_names.map(filename => (
                 <input key={'image-name-'+filename} type="hidden" name={'images_names'} value={filename} />
-            )) : files.length ? <input type="hidden" name={'thumb_name'} value={thumb_name} /> : null}
+            )) : files.length ? <input type="hidden" name={name || 'thumb_name'} value={thumb_name} /> : null}
             <FilePond
                 files={files}
                 onupdatefiles={setFiles}

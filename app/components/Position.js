@@ -123,7 +123,7 @@ const Position = ({ position, categories, currency }) => {
     const getThumbPath = (uuid=position.uuid, image = thumb) => {
         return thumb ? `https://www.inshop-online.com/storage/${uuid}/images/${image[0]}` : positionImg
     }
-    console.log(position.Category)
+
     return (
         <div className={'row'}>
             <div className="row__col row__col_1">

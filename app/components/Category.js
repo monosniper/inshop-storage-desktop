@@ -113,7 +113,7 @@ const Category = ({ category }) => {
                     <ImageInput
                         uuid={category.uuid}
                         images={image}
-                        multiple
+                        name={'image'}
                     />
 
                     <div className="d-flex flex-end mt-1">

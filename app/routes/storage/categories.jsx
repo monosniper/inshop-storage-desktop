@@ -83,7 +83,7 @@ export const action = async ({ request }) => {
                     title: formData.get('title'),
                 },
                 media: {
-                    image: formData.getAll('image'),
+                    image: formData.get('image'),
                 }
             });
             break;
