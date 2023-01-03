@@ -1,5 +1,5 @@
 import {json} from "@remix-run/node";
-import {Form, useActionData, useLoaderData} from "@remix-run/react";
+import {Form, useActionData, useLoaderData, useLocation} from "@remix-run/react";
 import {
     createCategory,
     deleteCategories,
@@ -96,7 +96,7 @@ export const action = async ({ request }) => {
             result = await deleteCategory(formData.get('id'))
             break;
         case "deleteMany":
-            result = await deleteCategories(formData.getAll('category_ids'))
+            result = await deleteCategories(formData.getAll('ids'))
             break;
     }
 
@@ -106,6 +106,7 @@ export const action = async ({ request }) => {
 export default function CategoriesPage() {
     const data = useLoaderData();
     const actionData = useActionData();
+    const location = useLocation();
     const [isCreateOpen, setIsCreateOpen] = useState(false)
 
     const [title, setTitle] = useState('');
@@ -114,16 +115,13 @@ export default function CategoriesPage() {
         setIsCreateOpen(true)
     }
 
-    console.log("HELOLO")
-    console.log(data)
-
     useEffect(() => {
         if(actionData && actionData.data) {
-            store.clearSelectedItems()
+            store.clearSelectedItems(location.pathname)
 
             actionData.data.updateCategory && toast('Изменения сохранены')
             actionData.data.deleteCategory && toast('Категория удалена')
-            actionData.data.deleteCategories && toast('Категории удалены')
+            actionData.data.deleteMany && toast('Категории удалены')
 
             if(actionData.data.createCategory) {
                 setIsCreateOpen(false)

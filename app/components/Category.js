@@ -5,7 +5,7 @@ import editIcon from '../assets/icons/edit.svg'
 import deleteIcon from '../assets/icons/delete.svg'
 import Checkbox from "~/components/Checkbox";
 import {Dialog, Heading, Label, Pane, SideSheet, TextInputField,} from "evergreen-ui";
-import {Form, useActionData, useSubmit} from "@remix-run/react";
+import {Form, useActionData, useLocation, useSubmit} from "@remix-run/react";
 import {store} from "~/lib/mobx";
 import {observer} from "mobx-react";
 import ImageInput from "~/components/ImageInput";
@@ -13,6 +13,7 @@ import ImageInput from "~/components/ImageInput";
 const Category = ({ category }) => {
     const submit = useSubmit();
     const actionData = useActionData();
+    const location = useLocation();
     const deleteFor = useRef();
 
     const [selected, setSelected] = useState(store.hasSelectedItem(category.id, location.pathname))
@@ -53,8 +54,12 @@ const Category = ({ category }) => {
     }
 
     useEffect(() => {
-        if(actionData && actionData.data && actionData.data.updateCategory) {
-            setIsEditOpen(false)
+        if(actionData && actionData.data) {
+            console.log(actionData.data)
+            console.log(actionData.data.deleteCategories)
+            actionData.data.updateCategory && setIsEditOpen(false)
+            actionData.data.deleteCategories && setIsSureDeleteShown(false)
+            console.log(isSureDeleteShown)
         }
     }, [actionData])
 

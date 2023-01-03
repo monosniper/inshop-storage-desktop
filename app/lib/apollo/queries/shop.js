@@ -126,3 +126,22 @@ export const GET_CATEGORIES = gql`
         }
     }
 `
+
+export const GET_CLIENTS = gql`
+    query Clients {
+        clients {
+            id
+            age
+            fio
+            email
+            address
+            phone
+            uuid
+            
+            Media {
+                name
+                filename
+            }
+        }
+    }
+`

@@ -6,6 +6,8 @@ import {observer} from "mobx-react";
 import {store} from "~/lib/mobx";
 import {Form, useActionData, useLocation, useSubmit} from "@remix-run/react";
 import {Dialog} from "evergreen-ui";
+import {$routes} from "~/utils/config";
+import {toJS} from "mobx";
 
 const SelectBar = () => {
     const deleteForm = useRef()
@@ -13,13 +15,15 @@ const SelectBar = () => {
     const actionData = useActionData()
     const location = useLocation()
     const page_with_select = [
-        '/storage',
-        '/storage/categories'
+        $routes.storage.index,
+        $routes.storage.categories,
+        $routes.clients,
     ]
     const [isSureDeleteShown, setIsSureDeleteShown] = useState(false)
+    const [items, setItems] = useState([])
 
     const handleClose = () => {
-        store.clearSelectedItems()
+        store.clearSelectedItems(location.pathname)
         store.setIsSelectBarShown(false)
     }
 
@@ -29,22 +33,35 @@ const SelectBar = () => {
     }
 
     useEffect(() => {
-        if(actionData && actionData.data && actionData.data.deleteItems) {
+        if(actionData && actionData.data) {
             setIsSureDeleteShown(false)
         }
     }, [actionData])
+    //
+    // useEffect(() => {
+    //     console.log(toJS(store.selectedItems))
+    //     setItems(store.selectedItems.filter(i => i.name === location.pathname))
+    //     console.log(items)
+    //     if(page_with_select.includes(location.pathname)) {
+    //         store.setIsSelectBarShown(!!items.length)
+    //     } else {
+    //         store.setIsSelectBarShown(false)
+    //     }
+    // }, [store.selectedItems.length, location])
+    //
+    // useEffect(() => {
+    //     console.log(items)
+    //     page_with_select.includes(location.pathname) && store.setIsSelectBarShown(!!store.selectedItems.length)
+    // }, [])
 
     useEffect(() => {
-        if(page_with_select.includes(location.pathname)) {
-            store.setIsSelectBarShown(!!store.selectedItems.length)
-        } else {
-            store.setIsSelectBarShown(false)
-        }
-    }, [store.selectedItems.length, location])
-
-    useEffect(() => {
-        page_with_select.includes(location.pathname) && store.setIsSelectBarShown(!!store.selectedItems.length)
-    }, [])
+        // setItems([])
+        // store.selectedItems.forEach(item => {
+        //     item.name === location.pathname && items.push(item)
+        // })
+        // console.log(items)
+        page_with_select.includes(location.pathname) && store.setIsSelectBarShown(!!store.selectedItems.filter(i => i.name === location.pathname).length)
+    }, [location.pathname, store.selectedItems.length])
 
     return (
         <div className={'select-bar ' + (store.isSelectBarShown ? '' : 'select-bar_hidden')}>
@@ -57,16 +74,16 @@ const SelectBar = () => {
                 cancelLabel="Отмена"
                 onConfirm={handleDelete}
             >
-                {store.selectedItems.length} элементов будут удалены безвозвратно
+                {store.selectedItems.filter(i => i.name === location.pathname).length} элементов будут удалены безвозвратно
                 <Form ref={deleteForm} method="post">
                     <input type="hidden" name={'_action'} value={'deleteMany'}/>
-                    {[...store.selectedItems].map(id => <input key={'Item-ids-'+id} type="hidden" name={'Item_ids'} value={id} />)}
+                    {[...store.selectedItems.filter(i => i.name === location.pathname)].map(id => <input key={'Item-ids-'+id.key} type="hidden" name={'ids'} value={id.key} />)}
                 </Form>
             </Dialog>
 
             <div className="container select-bar__wrapper">
                 <div className="select-bar__col">
-                    {store.selectedItems.length} элемента(ов) выбрано
+                    {store.selectedItems.filter(i => i.name === location.pathname).length} элемента(ов) выбрано
                 </div>
                 <div className="select-bar__col">
                     <button onClick={() => setIsSureDeleteShown(true)} className="select-bar__btn select-bar__btn_min">

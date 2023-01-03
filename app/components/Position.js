@@ -115,8 +115,9 @@ const Position = ({ position, categories, currency }) => {
     }
 
     useEffect(() => {
-        if(actionData && actionData.data && actionData.data.updatePosition) {
-            setIsEditOpen(false)
+        if(actionData && actionData.data) {
+            actionData.data.updatePosition && setIsEditOpen(false)
+            actionData.data.deletePositions && setIsSureDeleteShown(false)
         }
     }, [actionData])
 

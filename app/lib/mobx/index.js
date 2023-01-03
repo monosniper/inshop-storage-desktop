@@ -3,7 +3,6 @@ import {makeAutoObservable, toJS} from "mobx";
 class Store {
     selectedItems = []
     isSelectBarShown = false
-    loaderRef = null
     user = null
 
     constructor() {
@@ -23,19 +22,15 @@ class Store {
     }
 
     unselectItem(key, name) {
-        this.selectedItems = this.selectedItems.filter(i => i.key !== key && i.name === name)
+        this.selectedItems = this.selectedItems.filter(i => !(i.key === key && i.name === name))
     }
 
     hasSelectedItem(key, name) {
         return this.selectedItems.findIndex(i => i.key === key && i.name === name) !== -1
     }
 
-    clearSelectedItems() {
-        this.selectedItems.clear()
-    }
-
-    setLoaderRef(ref) {
-        this.loaderRef = ref
+    clearSelectedItems(name) {
+        this.selectedItems = this.selectedItems.filter(i => i.name !== name)
     }
 }
 

@@ -1,5 +1,5 @@
 import {json} from "@remix-run/node";
-import {Form, useActionData, useLoaderData} from "@remix-run/react";
+import {Form, useActionData, useLoaderData, useLocation} from "@remix-run/react";
 import {createPosition, deletePosition, deletePositions, getPositions, updatePosition} from "~/models/position.server";
 import { getCategories } from "~/models/category.server";
 
@@ -126,7 +126,7 @@ export const action = async ({ request }) => {
             result = await deletePosition(formData.get('id'))
             break;
         case "deleteMany":
-            result = await deletePositions(formData.getAll('position_ids'))
+            result = await deletePositions(formData.getAll('ids'))
             break;
     }
 
@@ -136,6 +136,7 @@ export const action = async ({ request }) => {
 export default function Storage() {
     const data = useLoaderData();
     const actionData = useActionData();
+    const location = useLocation();
     const [isCreateOpen, setIsCreateOpen] = useState(false)
 
     const categories = data.categories
@@ -196,7 +197,7 @@ export default function Storage() {
 
     useEffect(() => {
         if(actionData && actionData.data) {
-            store.clearSelectedItems()
+            store.clearSelectedItems(location.pathname)
 
             actionData.data.updatePosition && toast('Изменения сохранены')
             actionData.data.deletePosition && toast('Позиция удалена')

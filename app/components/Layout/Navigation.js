@@ -8,6 +8,7 @@ import walletIcon from '~/assets/icons/nav/wallet.svg';
 import clientsIcon from '~/assets/icons/nav/clients.svg';
 import {Link, useLocation} from "@remix-run/react";
 import {Position, Tooltip} from "evergreen-ui";
+import {$routes} from "~/utils/config";
 
 const Navigation = () => {
     const location = useLocation()
@@ -39,7 +40,7 @@ const Navigation = () => {
             title: 'Финансы',
         },
         {
-            pathname: '/',
+            pathname: $routes.clients,
             icon: clientsIcon,
             title: 'Клиенты',
         },
