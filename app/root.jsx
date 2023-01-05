@@ -31,7 +31,7 @@ export const links = () => {
     },
     {
       rel: "stylesheet",
-      href: "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap",
+      href: "https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@700&family=Montserrat:wght@400;500;700&display=swap",
     },
   ];
 };

@@ -145,3 +145,31 @@ export const GET_CLIENTS = gql`
         }
     }
 `
+
+export const GET_MODULES = gql`
+    query Modules {
+        modules {
+            id
+            uuid
+            title
+            description
+            price
+            slug
+          
+            buyed
+            
+            Media {
+                name
+                filename
+            }
+            
+            Dependencies {
+                id
+                
+                Dependencies {
+                    id
+                }
+            }
+        }
+    }
+`

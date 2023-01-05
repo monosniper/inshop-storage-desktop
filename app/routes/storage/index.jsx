@@ -235,6 +235,7 @@ export default function Storage() {
                 </button>
             </div>
         </div>
+
         <Positions
             positions={data.positions}
             categories={categories}

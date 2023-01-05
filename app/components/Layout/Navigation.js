@@ -25,7 +25,7 @@ const Navigation = () => {
             title: 'Склад',
         },
         {
-            pathname: '/',
+            pathname: $routes.store.index,
             icon: shopIcon,
             title: 'Магазин',
         },

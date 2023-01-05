@@ -1,6 +1,7 @@
 .wrapper {
   display: flex;
   padding-bottom: 50px !important;
+  padding-right: 30px !important;
 }
 .wrapper__right {
   padding: 20px 20px 0 0;

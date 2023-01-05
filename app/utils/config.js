@@ -3,5 +3,9 @@ export const $routes = {
         index: '/storage',
         categories: '/storage/categories',
     },
-    clients: '/clients'
+    clients: '/clients',
+    store: {
+        index: '/store',
+        module: (slug) => `/store/${slug}`
+    }
 }
