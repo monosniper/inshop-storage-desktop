@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState, useTransition} from 'react';
 
-import positionImg from '../assets/img/position.jpg'
+import positionImg from '../assets/img/position.png'
 import editIcon from '../assets/icons/edit.svg'
 import deleteIcon from '../assets/icons/delete.svg'
 import plusIcon from '../assets/icons/add.svg'
@@ -11,7 +11,6 @@ import {toast} from "react-toastify";
 import {$positionTypes} from "~/config";
 import {store} from "~/lib/mobx";
 import {observer} from "mobx-react";
-import checkIcon from "~/assets/icons/check.svg";
 import ImageInput from "~/components/ImageInput";
 import {$routes} from "~/utils/config";
 
@@ -122,7 +121,7 @@ const Position = ({ position, categories, currency }) => {
     }, [actionData])
 
     const getThumbPath = (uuid=position.uuid, image = thumb) => {
-        return thumb ? `https://www.inshop-online.com/storage/${uuid}/images/${image[0]}` : positionImg
+        return thumb.length ? `https://www.inshop-online.com/storage/${uuid}/images/${image[0]}` : positionImg
     }
 
     return (

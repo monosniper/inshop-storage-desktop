@@ -15,7 +15,7 @@ const Module = ({ module }) => {
     ] : []
 
     const getImagePath = () => {
-        return image.length ? `https://www.inshop-online.com/storage/${module.uuid}/images/${image[0]}` : moduleImg
+        return image.length ? `https://www.inshop-online.com/storage/modules/${module.uuid}/image/${image[0]}` : moduleImg
     }
 
     const handleClick = () => {

@@ -209,6 +209,7 @@
 }
 .module-page__right {
   flex-basis: calc(100% - 750px);
+  width: calc(100% - 750px);
 }
 .module-page__right .modules {
   margin-top: 1rem;

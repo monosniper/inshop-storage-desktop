@@ -101,8 +101,12 @@ const ModulePage = () => {
     const images = module.Media?.length && module.Media.find(media => media.name === 'images') ?
         module.Media.filter(media => media.name === 'images').map(image => image.filename) : []
 
-    const getImagePath = (filename=image[0]) => {
-        return image.length ? `https://www.inshop-online.com/storage/${module.uuid}/images/${filename}` : moduleImg
+    const getImagePath = (filename=image[0], s=false) => {
+        return image.length ? `https://www.inshop-online.com/storage/modules/${module.uuid}/image${s?'s':''}/${filename}` : moduleImg
+    }
+
+    const getImagesPath = (filename) => {
+        return `https://www.inshop-online.com/storage/modules/${module.uuid}/images/${filename}`
     }
 
     const handleClick = () => {
@@ -152,7 +156,7 @@ const ModulePage = () => {
             </div>
             <div className="module-page__body">
                 <div className="module-page__left">
-                    {module.Dependencies.length ? <ModulePageSlider images={images} getImagePath={getImagePath}/> : null}
+                    {module.Dependencies.length ? <ModulePageSlider images={images} getImagePath={getImagesPath}/> : null}
                     <div className="module-page__description">
                         <div className="module-page__title module-page__title_min">Описание</div>
                         <p>{module.description}</p>
@@ -162,7 +166,7 @@ const ModulePage = () => {
                     {module.Dependencies.length ? <div className="module-page__dependencies">
                         <div className="module-page__title module-page__title_min">Зависимости</div>
                         <Modules oneCol modules={module.Dependencies}/>
-                    </div> : <ModulePageSlider images={images} getImagePath={getImagePath} />}
+                    </div> : <ModulePageSlider images={images} getImagePath={getImagesPath} />}
                 </div>
             </div>
             <Form ref={moduleActivationForm} method="post">

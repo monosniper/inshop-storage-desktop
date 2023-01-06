@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 
-import categoryImg from '../assets/img/category.jpg'
+import categoryImg from '../assets/img/category.png'
 import editIcon from '../assets/icons/edit.svg'
 import deleteIcon from '../assets/icons/delete.svg'
 import Checkbox from "~/components/Checkbox";
