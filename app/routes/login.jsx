@@ -66,6 +66,7 @@ const Login = () => {
                 clientId={loaderData.OAUTH_CLIENT_ID}
                 redirectUri={loaderData.OAUTH_CLIENT_REDIRECT_URI}
                 onSuccess={onSuccess}
+                isCrossOrigin={true}
                 onFailure={(rs) => console.error(rs)}
                 state={''}
                 render={({onClick}) => <button className={"sign-btn"} onClick={onClick}>
