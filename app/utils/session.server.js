@@ -1,34 +1,34 @@
 import {
     redirect,
 } from "@remix-run/node";
-import {$api, $server, API_URL} from "~/lib/api";
 import {commitSession, getSession} from "~/sessions";
+import axios from "axios";
+import FormData from "form-data";
+
+const API_URL = process.env.API_ORIGIN_URL
 
 export async function login(code, request) {
-    return fetch(API_URL + '/oauth/token', {
-        method: 'post',
-        body: JSON.stringify({
-            client_id: process.env.OAUTH_CLIENT_ID,
-            client_secret: process.env.OAUTH_CLIENT_SECRET,
-            redirect_uri: process.env.OAUTH_CLIENT_REDIRECT_URI,
-            grant_type: 'authorization_code',
-            code
-        }),
+    return axios.post(API_URL + '/oauth/token', {
+        client_id: process.env.OAUTH_CLIENT_ID,
+        client_secret: process.env.OAUTH_CLIENT_SECRET,
+        redirect_uri: process.env.OAUTH_CLIENT_REDIRECT_URI,
+        grant_type: 'authorization_code',
+        code
+    }, {
         headers: {
-            'Content-Type': 'application/json'
+            'Accept-Encoding': 'application/json',
         }
     }).then((rs) => {
-        return rs.json()
-    }).then((data) => {
-        return fetch(API_URL + '/api/user', {
+        const { data } = rs
+
+        return axios.get(API_URL + '/api/user', {
             headers: {
-                Authorization: "Bearer " + data.access_token
+                Authorization: "Bearer " + data.access_token,
+                'Accept-Encoding': 'application/json',
             }
-        }).then((rs_) => {
-            return rs_.json();
-        }).then(user => {
+        }).then(rs => {
             return Promise.resolve({
-                user,
+                user: rs.data,
                 access_token: data.access_token,
                 refresh_token: data.refresh_token,
             });

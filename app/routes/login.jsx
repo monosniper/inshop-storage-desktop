@@ -2,11 +2,12 @@ import globalStyles from "~/styles/global.css";
 import styles from "~/styles/pages/login.css";
 import OAuth2Login from "react-simple-oauth2-login";
 import {json} from "@remix-run/node";
-import {useFetcher, useLoaderData, useSearchParams, useTransition} from "@remix-run/react";
+import {useFetcher, useLoaderData, useSearchParams, useSubmit, useTransition} from "@remix-run/react";
 import {createUserSession, login} from "~/utils/session.server";
 
 import logoImg from '~/assets/img/logo.svg'
-import {useEffect} from "react";
+import {useEffect, useRef, useState} from "react";
+import axios from "axios";
 
 export function links() {
     return [
@@ -18,6 +19,8 @@ export function links() {
 const badRequest = (data) => json(data, { status: 400 });
 
 export const action = async ({ request }) => {
+    // const body = await request.json()
+
     const formData = await request.formData();
     const code = formData.get('code')
     const redirectTo = formData.get('redirectTo')
@@ -29,7 +32,7 @@ export const action = async ({ request }) => {
             formError: `Произошла какая-то ошибка.`,
         });
     }
-    console.log(data)
+
     return createUserSession(data, redirectTo);
 };
 
@@ -43,20 +46,36 @@ export const loader = async () => {
 
 const Login = () => {
     const fetcher = useFetcher();
+    // const submit = useSubmit();
+    const form = useRef();
+    const [code, setCode] = useState();
     const loaderData = useLoaderData()
     const [searchParams] = useSearchParams();
-    const transition = useTransition()
+    // const transition = useTransition()
 
-    const onSuccess = ({ code }) => {
+    const onSuccess = (rs) => {
+        // axios.post('#', {
+        //     code: rs.code,
+        //     redirectTo: searchParams.get("redirectTo") ?? undefined
+        // }).then(rs => {
+        //     console.log(rs)
+        // })
         fetcher.submit({
-            code,
+            code: rs.code,
             redirectTo: searchParams.get("redirectTo") ?? undefined
         }, {method:'post'})
+        // submit(form.current, { replace: true });
+        // form.current.submit()
     }
 
     return (
         <div className={"wrapper"}>
             <fetcher.Form method="post" />
+            {/*<form action="login" method={'post'} ref={form}>*/}
+            {/*    <input type="hidden" name={'code'} value={code}/>*/}
+            {/*    <input type="hidden" name={'redirectTo'} value={searchParams.get("redirectTo") ?? undefined}/>*/}
+            {/*    /!*<button>sads</button>*!/*/}
+            {/*</form>*/}
             <div className="big-logo">
                 <img src={logoImg} />
             </div>
@@ -66,11 +85,12 @@ const Login = () => {
                 clientId={loaderData.OAUTH_CLIENT_ID}
                 redirectUri={loaderData.OAUTH_CLIENT_REDIRECT_URI}
                 onSuccess={onSuccess}
-                isCrossOrigin={true}
+                // isCrossOrigin={true}
                 onFailure={(rs) => console.error(rs)}
                 state={''}
                 render={({onClick}) => <button className={"sign-btn"} onClick={onClick}>
-                    {transition.state === "idle" ? 'Авторизация' : 'Загрузка...'}
+                    Авторизация
+                    {/*{transition.state === "idle" ? 'Авторизация' : 'Загрузка...'}*/}
                 </button>}
             />
         </div>

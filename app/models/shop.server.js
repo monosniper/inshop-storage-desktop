@@ -1,11 +1,17 @@
 import {graphQLClient} from "~/lib/apollo";
-import {GET_SHOPS} from "~/lib/apollo/queries/shop";
+import {GET_CATEGORIES, GET_SHOPS} from "~/lib/apollo/queries/shop";
+import {DELETE_CATEGORY} from "~/lib/apollo/mutations/category";
 
 export async function getShops(userId) {
-  return await graphQLClient.query({
-    query: GET_SHOPS,
-    variables: {
-      userId
-    },
-  });
+  try {
+    return await graphQLClient.query({
+      query: GET_SHOPS,
+      variables: {
+        userId
+      },
+    });
+  } catch (e) {
+    console.log(Object.keys(e))
+    console.log(e.networkError.result)
+  }
 }
