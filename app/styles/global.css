@@ -1,6 +1,7 @@
 @import "filepond/dist/filepond.min.css";
 @import "@draft-js-plugins/static-toolbar/lib/plugin.css";
 @import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300;400;500;700&display=swap");
 .brd {
   border: 1px solid #e2eded;
   border-color: #eaf1f1 #e4eded #dbe7e7 #e4eded;

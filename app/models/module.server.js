@@ -1,6 +1,6 @@
-import {newGraphQLClient} from "~/lib/apollo";
-import {GET_MODULES} from "~/lib/apollo/queries/shop";
-import {ACTIVATE_MODULE, DEACTIVATE_MODULE, GET_MODULE, BUY_MODULE} from "~/lib/apollo/mutations/module";
+import {graphQLClient, newGraphQLClient} from "~/lib/apollo";
+import {GET_MODULES, GET_SHOPS} from "~/lib/apollo/queries/shop";
+import {ACTIVATE_MODULE, DEACTIVATE_MODULE, GET_MODULE, BUY_MODULE, SAVE_MODULE} from "~/lib/apollo/mutations/module";
 
 export async function getModules(domain) {
     return await newGraphQLClient(domain).query({
@@ -9,12 +9,18 @@ export async function getModules(domain) {
 }
 
 export async function getModule(domain, slug) {
-    return await newGraphQLClient(domain).query({
-        query: GET_MODULE,
-        variables: {
-            slug
-        }
-    });
+    try {
+        return await newGraphQLClient(domain).query({
+            query: GET_MODULE,
+            variables: {
+                slug
+            }
+        });
+    } catch (e) {
+        const err = JSON.parse(JSON.stringify(e))
+        console.log(err)
+        err.networkError && console.error(err.networkError.result.errors)
+    }
 }
 
 export async function activateModule(domain, id) {
@@ -51,4 +57,25 @@ export async function buyModule(domain, id) {
             {query: GET_MODULES},
         ],
     });
+}
+
+export async function saveModule(domain, options, id) {
+    try {
+        return await newGraphQLClient(domain).mutate({
+            mutation: SAVE_MODULE,
+            variables: {
+                input: {
+                    id,
+                    options
+                }
+            },
+            refetchQueries: [
+                {query: GET_MODULES},
+            ],
+        });
+    } catch (e) {
+        const err = JSON.parse(JSON.stringify(e))
+        console.log(err)
+        err.networkError && console.error(err.networkError.result.errors)
+    }
 }

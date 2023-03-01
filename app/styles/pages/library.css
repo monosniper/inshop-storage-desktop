@@ -1,0 +1,117 @@
+.module.active {
+  background: rgba(255, 0, 199, 0.1);
+}
+
+* {
+  font-family: "Montserrat Alternates", sans-serif;
+}
+
+.library {
+  display: flex;
+  margin-top: 25px;
+  gap: 50px;
+}
+.library .modules {
+  grid-template-columns: auto !important;
+  overflow-y: scroll;
+  max-height: 750px;
+}
+.library__left {
+  flex-basis: 450px;
+}
+.library__right {
+  flex-basis: calc(100% - 500px);
+}
+.library__center {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  height: 70vh;
+  text-align: center;
+  gap: 1rem;
+  color: #ADADAD;
+  font-weight: 600;
+}
+
+.switch {
+  border: 1px solid #DEDEDE;
+  border-radius: 30px;
+  height: 25px;
+  width: 50px;
+  display: flex;
+  cursor: pointer;
+  background: #f5f5f5;
+  align-items: center;
+  padding: 0 1px;
+}
+.switch.active {
+  background: linear-gradient(79.09deg, #13A5E3 -1.07%, #1F7DD5 98.65%);
+  justify-content: flex-end;
+}
+.switch input {
+  display: none;
+}
+.switch__ball {
+  border-radius: 100%;
+  background: #fff;
+  width: 21px;
+  height: 21px;
+  box-shadow: 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+}
+
+.slug__title {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 24px;
+}
+.slug__title div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.slug__title a {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.slug__form {
+  padding-top: 1.5rem;
+}
+.slug__switch {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 20px 0;
+}
+.slug label {
+  font-size: 14px;
+  padding-left: 15px;
+}
+.slug__end {
+  display: flex;
+  margin-top: 2rem;
+}
+.slug__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 450px;
+  max-width: 100%;
+}
+.slug__field input {
+  background: #fff;
+  border-radius: 20px;
+  padding: 10px 20px;
+  box-shadow: 0px 4px 32px -15px rgba(0, 0, 0, 0.25);
+  border: none;
+  outline: none;
+}
+.slug__field + .slug__field {
+  margin-top: 1rem;
+}
+
+/*# sourceMappingURL=library.css.map */

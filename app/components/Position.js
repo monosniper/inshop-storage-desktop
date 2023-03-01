@@ -5,13 +5,13 @@ import editIcon from '../assets/icons/edit.svg'
 import deleteIcon from '../assets/icons/delete.svg'
 import plusIcon from '../assets/icons/add.svg'
 import Checkbox from "~/components/Checkbox";
-import {Dialog, Heading, Label, Pane, SideSheet, Textarea, TextInputField, toaster, Tooltip} from "evergreen-ui";
-import {Form, Link, useActionData, useLocation, useNavigate, useSubmit} from "@remix-run/react";
-import {toast} from "react-toastify";
+import {Dialog, Heading, Label, Pane, SideSheet, Textarea, TextInputField, Tooltip} from "evergreen-ui";
+import {Form, Link, useActionData, useLocation, useSubmit} from "@remix-run/react";
 import {$positionTypes} from "~/config";
 import {store} from "~/lib/mobx";
 import {observer} from "mobx-react";
 import ImageInput from "~/components/ImageInput";
+import categoryDefaultImg from '~/assets/img/category.png'
 import {$routes} from "~/utils/config";
 
 const Position = ({ position, categories, currency }) => {
@@ -121,7 +121,11 @@ const Position = ({ position, categories, currency }) => {
     }, [actionData])
 
     const getThumbPath = (uuid=position.uuid, image = thumb) => {
-        return thumb.length ? `https://www.inshop-online.com/storage/${uuid}/images/${image[0]}` : positionImg
+        return image.length ? `https://www.inshop-online.com/storage/${uuid}/images/${image[0]}` : positionImg
+    }
+
+    const getCategoryThumb = () => {
+        return categoryImage.length ? `https://www.inshop-online.com/storage/${position.Category?.uuid}/images/${categoryImage[0]}` : categoryDefaultImg
     }
 
     return (
@@ -142,7 +146,7 @@ const Position = ({ position, categories, currency }) => {
             <div className="row__col row__col_4">{position.title}</div>
             <div className="row__col row__col_3">{position.subtitle}</div>
             <div className="row__col row__col_3">
-                <Tooltip content={<div className={'row__tooltip-thumb'} style={{backgroundImage: 'url('+getThumbPath(position.Category?.uuid, categoryImage)+')'}}></div>} appearance="card">
+                <Tooltip content={<div className={'row__tooltip-thumb'} style={{backgroundImage: 'url('+getCategoryThumb()+')'}}></div>} appearance="card">
                     <Link to={$routes.storage.categories + '#' + position.Category?.id} className={'link'}>
                         {position.Category?.title}
                     </Link>

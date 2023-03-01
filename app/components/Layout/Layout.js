@@ -7,7 +7,7 @@ import LoadingBar from 'react-top-loading-bar'
 import {motion} from 'framer-motion'
 import SelectBar from "~/components/SelectBar";
 
-const Layout = ({ children }) => {
+const Layout = ({ children, render=null }) => {
     const loadingRef = useRef()
     const transition = useTransition()
     const loaderData = useLoaderData()
@@ -26,21 +26,22 @@ const Layout = ({ children }) => {
         }
     }, [transition.state])
 
+    const motionEl = <motion.main
+        key={useLocation().pathname}
+        initial={{x: '10%', opacity: 0}}
+        animate={{opacity: 1, x: '0'}}
+        exit={{x: '-10%', opacity: 0}}
+        transition={{duration: 0.3}}
+    >
+        {children}
+    </motion.main>
+
     return (
         <div className={'wrapper container'}>
             <Navigation />
             <div className={'wrapper__right'}>
                 {loaderData && <Header {...loaderData} />}
-                <motion.main
-                    key={useLocation().pathname}
-                    initial={{x: '10%', opacity: 0}}
-                    animate={{opacity: 1, x: '0'}}
-                    exit={{x: '-10%', opacity: 0}}
-                    transition={{duration: 0.3}}
-                >
-                    {children}
-                </motion.main>
-                {/*{children}*/}
+                {render ? render(motionEl) : motionEl}
                 <ToastContainer
                     position="top-center"
                     autoClose={5000}

@@ -21,6 +21,10 @@
   height: 100%;
 }
 
+.module-page .slick-slider {
+  height: auto !important;
+}
+
 .modules {
   display: grid;
   row-gap: 1rem;

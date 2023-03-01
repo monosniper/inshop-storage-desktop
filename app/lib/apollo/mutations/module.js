@@ -18,6 +18,12 @@ export const BUY_MODULE = gql`
     }
 `
 
+export const SAVE_MODULE = gql`
+    mutation saveModule($input: SaveModuleInput!) {
+        saveModule(input: $input)
+    }
+`
+
 export const GET_MODULE = gql`
     query Module($slug: String!) {
         module(slug: $slug) {
@@ -27,6 +33,8 @@ export const GET_MODULE = gql`
             description
             price
             slug
+            default_options
+            options
             
             buyed
             isActive

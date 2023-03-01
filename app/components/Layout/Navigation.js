@@ -15,12 +15,12 @@ const Navigation = () => {
 
     const routes = [
         {
-            pathname: '/home',
+            pathname: $routes.index,
             icon: homeIcon,
             title: 'Дом',
         },
         {
-            pathname: '/storage',
+            pathname: $routes.storage.index,
             icon: storageIcon,
             title: 'Склад',
         },
@@ -30,12 +30,12 @@ const Navigation = () => {
             title: 'Магазин',
         },
         {
-            pathname: '/',
+            pathname: $routes.library.index,
             icon: libraryIcon,
             title: 'Библиотека',
         },
         {
-            pathname: '/',
+            pathname: $routes.wallet,
             icon: walletIcon,
             title: 'Финансы',
         },
@@ -46,11 +46,18 @@ const Navigation = () => {
         },
     ]
 
+    const loc = location.pathname;
+
+    const isActive = (pathname) =>
+        pathname === $routes.index
+            ? loc === pathname
+            : loc === pathname || loc.startsWith(pathname)
+
     return (
         <div className={'nav'}>
             {routes.map(route => (
                 <Tooltip key={route.pathname} content={route.title} position={Position.RIGHT} showDelay={200}>
-                    <Link to={route.pathname} className={"nav-item " + (location.pathname === route.pathname ? 'nav-item_active' : '')}>
+                    <Link to={route.pathname} className={"nav-item " + (isActive(route.pathname) ? 'nav-item_active' : '')}>
                         <img src={route.icon}/>
                     </Link>
                     {/*<a key={route.pathname} href={route.pathname} className={"nav-item " + (location.pathname === route.pathname ? 'nav-item_active' : '')}>*/}

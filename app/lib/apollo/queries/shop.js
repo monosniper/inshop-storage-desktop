@@ -155,6 +155,7 @@ export const GET_MODULES = gql`
             description
             price
             slug
+            options
           
             buyed
             

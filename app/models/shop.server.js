@@ -11,7 +11,10 @@ export async function getShops(userId) {
       },
     });
   } catch (e) {
-    console.log(Object.keys(e))
+    console.log(e)
     console.log(e.networkError.result)
+    console.log(e.clientErrors.result)
+    console.log(e.networkError.result)
+    console.log(e.message.result)
   }
 }
