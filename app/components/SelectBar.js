@@ -7,7 +7,6 @@ import {store} from "~/lib/mobx";
 import {Form, useActionData, useLocation, useSubmit} from "@remix-run/react";
 import {Dialog} from "evergreen-ui";
 import {$routes} from "~/utils/config";
-import {toJS} from "mobx";
 
 const SelectBar = () => {
     const deleteForm = useRef()
@@ -18,9 +17,9 @@ const SelectBar = () => {
         $routes.storage.index,
         $routes.storage.categories,
         $routes.clients,
+        $routes.domains,
     ]
     const [isSureDeleteShown, setIsSureDeleteShown] = useState(false)
-    const [items, setItems] = useState([])
 
     const handleClose = () => {
         store.clearSelectedItems(location.pathname)
@@ -37,29 +36,8 @@ const SelectBar = () => {
             setIsSureDeleteShown(false)
         }
     }, [actionData])
-    //
-    // useEffect(() => {
-    //     console.log(toJS(store.selectedItems))
-    //     setItems(store.selectedItems.filter(i => i.name === location.pathname))
-    //     console.log(items)
-    //     if(page_with_select.includes(location.pathname)) {
-    //         store.setIsSelectBarShown(!!items.length)
-    //     } else {
-    //         store.setIsSelectBarShown(false)
-    //     }
-    // }, [store.selectedItems.length, location])
-    //
-    // useEffect(() => {
-    //     console.log(items)
-    //     page_with_select.includes(location.pathname) && store.setIsSelectBarShown(!!store.selectedItems.length)
-    // }, [])
 
     useEffect(() => {
-        // setItems([])
-        // store.selectedItems.forEach(item => {
-        //     item.name === location.pathname && items.push(item)
-        // })
-        // console.log(items)
         page_with_select.includes(location.pathname) && store.setIsSelectBarShown(!!store.selectedItems.filter(i => i.name === location.pathname).length)
     }, [location.pathname, store.selectedItems.length])
 

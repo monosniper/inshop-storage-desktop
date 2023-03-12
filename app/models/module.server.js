@@ -2,9 +2,12 @@ import {graphQLClient, newGraphQLClient} from "~/lib/apollo";
 import {GET_MODULES, GET_SHOPS} from "~/lib/apollo/queries/shop";
 import {ACTIVATE_MODULE, DEACTIVATE_MODULE, GET_MODULE, BUY_MODULE, SAVE_MODULE} from "~/lib/apollo/mutations/module";
 
-export async function getModules(domain) {
+export async function getModules(domain, buyed=false) {
     return await newGraphQLClient(domain).query({
-        query: GET_MODULES
+        query: GET_MODULES,
+        variables: {
+            buyed
+        }
     });
 }
 

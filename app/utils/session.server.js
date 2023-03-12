@@ -39,7 +39,7 @@ export async function login(code, request) {
     })
 }
 
-function getUserSession(request) {
+export function getUserSession(request) {
     return getSession(request.headers.get("Cookie"));
 }
 

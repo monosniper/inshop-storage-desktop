@@ -13,7 +13,7 @@ function LibraryWrapper({ children, modules, search, setSearch }) {
                 Библиотка
             </div>
             <div className="title__right">
-                <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} className="search" placeholder={'Поиск...'}/>
+                <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} className="store-search" placeholder={'Поиск...'}/>
             </div>
         </div>
         <div className="library">

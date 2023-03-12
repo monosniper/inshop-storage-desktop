@@ -1,5 +1,6 @@
 export const $routes = {
     index: '/',
+    domains: '/domains',
     wallet: '/wallet',
     storage: {
         index: '/storage',

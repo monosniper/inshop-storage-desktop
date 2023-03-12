@@ -12,7 +12,6 @@ import {store} from "~/lib/mobx";
 import {getSession} from "~/sessions";
 import {getShops} from "~/models/shop.server";
 import {requireUser} from "~/utils/session.server";
-import clientsIcon from '~/assets/icons/nav/clients.svg';
 import {createClient, deleteClient, deleteClients, getClients, updateClient} from "~/models/client.server";
 import Clients from '../components/Clients'
 

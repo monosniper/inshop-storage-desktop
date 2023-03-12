@@ -6,9 +6,7 @@ import {requireUser} from "~/utils/session.server";
 import {getSession} from "~/sessions";
 import {getShops} from "~/models/shop.server";
 import {json} from "@remix-run/node";
-import slickStyles from 'slick-carousel/slick/slick.css';
-import slickThemeStyles from 'slick-carousel/slick/slick-theme.css';
-import {getModule, activateModule, deactivateModule, buyModule, getModules, saveModule} from "~/models/module.server";
+import {getModule, activateModule, deactivateModule, getModules, saveModule} from "~/models/module.server";
 import {Form, useActionData, useLoaderData, useSubmit} from "@remix-run/react";
 import moduleImg from "~/assets/img/module.png";
 import LibraryLayout from "~/components/Layout/LibraryLayout";
@@ -20,8 +18,6 @@ export function links() {
         { rel: "stylesheet", href: globalStyles },
         { rel: "stylesheet", href: storeStyles },
         { rel: "stylesheet", href: styles },
-        { rel: "stylesheet", href: slickStyles },
-        { rel: "stylesheet", href: slickThemeStyles },
     ];
 }
 

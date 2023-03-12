@@ -1,49 +1,9 @@
 import {gql} from "@apollo/client";
 
-export const GET_SHOP = gql`
-    query Shop($host: String!) {
-        shop(host: $host) {
-            options
-            Categories {
-                id
-                title
-            }
-            Modules {
-                slug
-                
-                Shop_Module {
-                    isActive
-                }
-            }
-            Colors {
-                slug
-                
-                Shop_Color {
-                    value
-                }
-            }
-            Positions {
-                id
-                type
-                price
-                discount
-                discount_type
-                priority
-                description
-                title
-                subtitle
-                inStock
-                properties
-                
-                Category {
-                    id
-                    title
-                }
-            }
-            Filters {
-                id
-                slug
-            }
+export const CREATE_SHOP = gql`
+    mutation createShop($input: CreateShopInput!) {
+        createShop(input: $input) {
+            id
         }
     }
 `
@@ -51,8 +11,11 @@ export const GET_SHOP = gql`
 export const GET_SHOPS = gql`
     query Shops($userId: ID!) {
         shops(userId: $userId) {
+            id
+            uuid
             options
             Domain {
+                id
                 name
             }
             Modules {
@@ -73,6 +36,26 @@ export const GET_SHOPS = gql`
                 id
                 slug
             }
+            Media {
+                name
+                filename
+            }
+        }
+    }
+`
+
+export const GET_DOMAINS = gql`
+    query Domains(
+            $userId: ID!
+            $notUsed: Boolean
+        ) {
+        domains(
+                userId: $userId
+                notUsed: $notUsed
+            ) {
+            id
+            name
+            isSubdomain
         }
     }
 `
@@ -147,8 +130,8 @@ export const GET_CLIENTS = gql`
 `
 
 export const GET_MODULES = gql`
-    query Modules {
-        modules {
+    query Modules($buyed: Boolean!) {
+        modules(buyed: $buyed) {
             id
             uuid
             title
@@ -158,6 +141,7 @@ export const GET_MODULES = gql`
             options
           
             buyed
+            isActive
             
             Media {
                 name
@@ -172,5 +156,17 @@ export const GET_MODULES = gql`
                 }
             }
         }
+    }
+`
+
+export const DELETE_SHOP = gql`
+    mutation deleteShop($id: ID!) {
+        deleteShop(id: $id)
+    }
+`
+
+export const UPDATE_SHOP = gql`
+    mutation updateShop($patch: UpdateShopPatch!) {
+        updateShop(patch: $patch)
     }
 `

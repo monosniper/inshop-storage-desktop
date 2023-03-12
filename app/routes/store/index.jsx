@@ -164,7 +164,7 @@ const Index = () => {
                     Магазин
                 </div>
                 <div className="title__right">
-                    <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} className="search" placeholder={'Поиск...'}/>
+                    <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} className="store-search" placeholder={'Поиск...'}/>
                 </div>
             </div>
             <Slider {...settings}>

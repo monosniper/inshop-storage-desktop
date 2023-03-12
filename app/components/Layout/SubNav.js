@@ -13,9 +13,6 @@ const SubNav = () => {
                     <Link to={route.pathname} className={"nav-item " + (location.pathname === route.pathname ? 'nav-item_active' : '')}>
                         <img src={route.icon}/>
                     </Link>
-                    {/*<a key={route.pathname} href={route.pathname} className={"nav-item " + (location.pathname === route.pathname ? 'nav-item_active' : '')}>*/}
-                    {/*    <img src={route.icon}/>*/}
-                    {/*</a>*/}
                 </Tooltip>
             ))}
         </div>

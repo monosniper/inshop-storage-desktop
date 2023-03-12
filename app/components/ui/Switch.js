@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-const Switch = ({ onChange, defaultChecked=false }) => {
+const Switch = ({ onChange, defaultChecked=false, name=false }) => {
     const [checked, setChecked] = useState(defaultChecked)
 
     const handleClick = () => {
@@ -10,7 +10,7 @@ const Switch = ({ onChange, defaultChecked=false }) => {
 
     return (
         <div onClick={handleClick} className={'switch ' + (checked ? 'active' : '')}>
-            <input type="checkbox" checked={checked} onChange={onChange} />
+            <input name={name} type="checkbox" checked={checked} onChange={onChange} />
             <div className="switch__ball"></div>
         </div>
     );

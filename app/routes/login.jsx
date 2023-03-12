@@ -46,36 +46,19 @@ export const loader = async () => {
 
 const Login = () => {
     const fetcher = useFetcher();
-    // const submit = useSubmit();
-    const form = useRef();
-    const [code, setCode] = useState();
     const loaderData = useLoaderData()
     const [searchParams] = useSearchParams();
-    // const transition = useTransition()
 
     const onSuccess = (rs) => {
-        // axios.post('#', {
-        //     code: rs.code,
-        //     redirectTo: searchParams.get("redirectTo") ?? undefined
-        // }).then(rs => {
-        //     console.log(rs)
-        // })
         fetcher.submit({
             code: rs.code,
             redirectTo: searchParams.get("redirectTo") ?? undefined
         }, {method:'post'})
-        // submit(form.current, { replace: true });
-        // form.current.submit()
     }
 
     return (
         <div className={"wrapper"}>
             <fetcher.Form method="post" />
-            {/*<form action="login" method={'post'} ref={form}>*/}
-            {/*    <input type="hidden" name={'code'} value={code}/>*/}
-            {/*    <input type="hidden" name={'redirectTo'} value={searchParams.get("redirectTo") ?? undefined}/>*/}
-            {/*    /!*<button>sads</button>*!/*/}
-            {/*</form>*/}
             <div className="big-logo">
                 <img src={logoImg} />
             </div>
@@ -90,7 +73,6 @@ const Login = () => {
                 state={''}
                 render={({onClick}) => <button className={"sign-btn"} onClick={onClick}>
                     Авторизация
-                    {/*{transition.state === "idle" ? 'Авторизация' : 'Загрузка...'}*/}
                 </button>}
             />
         </div>

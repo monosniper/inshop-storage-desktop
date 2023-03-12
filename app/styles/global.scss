@@ -22,9 +22,131 @@
   }
 }
 
+.lbl {
+  display: block;
+}
+
+.switch {
+  border: 1px solid #DEDEDE;
+  border-radius: 30px;
+  height: 25px;
+  width: 50px;
+  display: flex;
+  cursor: pointer;
+  background: #f5f5f5;
+  align-items: center;
+  padding: 0 1px;
+
+  &.active {
+    background: linear-gradient(79.09deg, #13A5E3 -1.07%, #1F7DD5 98.65%);
+    justify-content: flex-end;
+  }
+
+  input {
+    display: none;
+  }
+
+  &__ball {
+    border-radius: 100%;
+    background: #fff;
+    width: 21px;
+    height: 21px;
+    box-shadow: 3px 0px 4px -3px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.flex-between {
+  justify-content: space-between;
+}
 body {
   color: $font_color;
   background: $bg;
+}
+
+.search {
+  position: relative;
+
+  &__tag {
+    padding: 8px 12px;
+    border-radius: 12px;
+    width: 100%;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 26px -9px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    font-size: 16px;
+  }
+
+  &__result {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 12px;
+    width: 100%;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 26px -9px rgba(0, 0, 0, 0.25);
+    justify-content: space-between;
+    cursor: pointer;
+    transition: .1s ease-in;
+    margin-bottom: 4px;
+
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
+
+  &__left {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+  }
+
+  &__icon {
+    width: 50px;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &__type {
+    font-size: 14px;
+    color: #919191;
+  }
+
+  &__field {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    border: 0px solid hsl(0, 0%, 80%);
+    border-radius: 12px;
+    padding: 0 5px;
+    transition: .1s ease-in;
+    cursor: pointer;
+    width: 45px;
+
+    input {
+      font-size: 14px;
+      outline: none;
+      align-self: normal;
+      border: none;
+      background: transparent;
+      width: 100%;
+    }
+
+    img {
+      width: 35px;
+    }
+  }
+
+  &__results {
+    position: absolute;
+    padding-top: 5px;
+    z-index: 10;
+    left: 0;
+    right: 0;
+  }
+
+
 }
 
 .link {
