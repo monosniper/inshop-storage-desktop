@@ -105,7 +105,7 @@ const Index = observer(() => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [isCreateOpen, setIsCreateOpen] = useState(false)
-    console.log(domains)
+
     const handleCreate = () => setIsCreateOpen(true)
 
     useEffect(() => {

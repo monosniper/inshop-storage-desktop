@@ -2,8 +2,8 @@ import {graphQLClient, newGraphQLClient} from "~/lib/apollo";
 import {CREATE_SHOP, GET_SHOPS, DELETE_SHOP, UPDATE_SHOP, GET_DOMAINS} from "~/lib/apollo/queries/shop";
 import {SEARCH_POSITIONS} from "~/lib/apollo/queries/positions";
 import {SEARCH_MODULES} from "~/lib/apollo/queries/modules";
-import {GET_MODULE} from "~/lib/apollo/mutations/module";
 import {SEARCH_CATEGORIES} from "~/lib/apollo/queries/categories";
+import {SEARCH_SHOPS} from "~/lib/apollo/queries/shop";
 
 export async function createShop(input) {
   try {
@@ -143,6 +143,27 @@ export async function searchCategories(query, limit, userId) {
   try {
     return await newGraphQLClient().query({
       query: SEARCH_CATEGORIES,
+      variables: {
+        query,
+        limit,
+        userId,
+      },
+    });
+  } catch (e) {
+    console.log(e)
+    console.log(e.networkError.result)
+    console.log(e.clientErrors.result)
+    console.log(e.networkError.result)
+    console.log(e.message.result)
+    return null
+  }
+}
+
+
+export async function searchShops(query, limit, userId) {
+  try {
+    return await newGraphQLClient().query({
+      query: SEARCH_SHOPS,
       variables: {
         query,
         limit,

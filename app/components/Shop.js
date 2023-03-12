@@ -54,7 +54,7 @@ const Shop = ({ shop }) => {
     const getPreviewPath = () => {
         return preview.length ? `https://www.inshop-online.com/storage/${shop.uuid}/images/${preview[0]}` : shopPreviewImg
     }
-
+    console.log(shop)
     return (
         <>
             <div className={'shop'}>

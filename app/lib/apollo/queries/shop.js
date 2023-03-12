@@ -170,3 +170,17 @@ export const UPDATE_SHOP = gql`
         updateShop(patch: $patch)
     }
 `
+
+export const SEARCH_SHOPS = gql`
+    query Shops($query: String, $userId: ID, $limit: Int) {
+        shops(query: $query, userId: $userId, limit: $limit) {
+            uuid
+            title
+            
+            Media {
+                name
+                filename
+            }
+        }
+    }
+`

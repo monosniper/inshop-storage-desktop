@@ -1,9 +1,10 @@
 import {json} from "@remix-run/node";
 import {requireUser} from "~/utils/session.server";
-import {searchPostions, searchModules, searchCategories} from "~/models/shop.server";
+import {searchPostions, searchModules, searchCategories, searchShops} from "~/models/shop.server";
 import moduleImg from "~/assets/img/module.png";
 import positionImg from "~/assets/img/position.png";
 import categoryImg from "~/assets/img/category.png";
+import shopImg from "~/assets/img/shop_icon.png";
 
 export const loader = async ({ request }) => {
     const url = new URL(request.url);
@@ -14,6 +15,7 @@ export const loader = async ({ request }) => {
     let positions = await searchPostions(query, Number(limit), user.id)
     let modules = await searchModules(query, Number(limit))
     let categories = await searchCategories(query, Number(limit), user.id)
+    let shops = await searchShops(query, Number(limit), user.id)
 
     const data = {
         positions: positions.data.positions.map(pos => {
@@ -45,10 +47,20 @@ export const loader = async ({ request }) => {
                 type: 'categories',
                 icon: image.length ? `https://www.inshop-online.com/storage/categories/${cat.uuid}/image/${image[0]}` : categoryImg
             }
+        }),
+        shops: shops.data.shops.map(shop => {
+            const image = shop.Media?.length && shop.Media.find(media => media.name === 'preview') ? [
+                shop.Media.find(media => media.name === 'preview').filename
+            ] : []
+
+            return {...shop,
+                type: 'shops',
+                icon: image.length ? `https://www.inshop-online.com/storage/${shop.uuid}/images/${image[0]}` : shopImg
+            }
         })
     }
 
-    const results = [...data.positions, ...data.modules, ...data.categories]
+    const results = [...data.positions, ...data.modules, ...data.categories, ...data.shops]
 
     return json(results);
 };

@@ -29,15 +29,8 @@ export const loader = async ({ request }) => {
 
     const { domain } = session
 
-    if(domain) {
-        domains = await getDomains(user.id)
-        domains = domains.data.domains
-    } else {
-        noties.push({
-            type: 'warning',
-            message: 'Необходимо выбрать магазин'
-        })
-    }
+    domains = await getDomains(user.id)
+    domains = domains.data.domains
 
     let shops = await getShops(user.id);
     shops = shops.data.shops
