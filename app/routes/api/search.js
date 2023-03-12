@@ -60,7 +60,9 @@ export const loader = async ({ request }) => {
         })
     }
 
-    const results = [...data.positions, ...data.modules, ...data.categories, ...data.shops]
+    const results = [...data.positions, ...data.modules, ...data.categories,
+        // ...data.shops
+    ]
 
     return json(results);
 };
