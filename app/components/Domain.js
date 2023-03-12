@@ -46,13 +46,15 @@ const Client = ({ domain }) => {
         }
     }, [actionData])
 
+    const url = domain.isSubdomain ? domain.name + '.inshop-app.site' : domain.name
+
     return (
         <div className={'row'}>
             <div className="row__col row__col_1">
                 <Checkbox handleCheck={handleSelect} checked={selected} />
             </div>
             <div className="row__col row__col_1 row__id row__number">{domain.id}</div>
-            <div className="row__col"><a className={'link'} target={'_blank'} href={'http://'+domain.name}>{domain.name}</a></div>
+            <div className="row__col"><a className={'link'} target={'_blank'} href={'http://'+url}>{url}</a></div>
             <div className="row__col">
                 {/*  Current shop  */}
             </div>

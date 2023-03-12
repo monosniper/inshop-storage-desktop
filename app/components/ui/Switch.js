@@ -5,7 +5,7 @@ const Switch = ({ onChange, defaultChecked=false, name=false }) => {
 
     const handleClick = () => {
         setChecked(!checked)
-        onChange(checked)
+        onChange(!checked)
     }
 
     return (

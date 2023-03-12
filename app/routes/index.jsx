@@ -102,8 +102,6 @@ export const loader = async ({ request }) => {
 const Index = observer(() => {
     const actionData = useActionData()
     const {shops, domains} = useLoaderData()
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
     const [isCreateOpen, setIsCreateOpen] = useState(false)
 
     const handleCreate = () => setIsCreateOpen(true)
@@ -116,9 +114,6 @@ const Index = observer(() => {
             if(actionData.data.createShop) {
                 setIsCreateOpen(false)
                 toast('Магазин создан успешно')
-
-                setTitle(null)
-                setDescription(null)
             }
         }
     }, [actionData])
@@ -166,8 +161,8 @@ const Index = observer(() => {
                     <Select
                         placeholder={'Выберите доменное имя'}
                         name={'domain'}
-                        options={domains.map(({id: value, name: label}) => {
-                            return { value, label }
+                        options={domains.map(({id: value, name, isSubdomain}) => {
+                            return { value, label: isSubdomain ? name + '.inshop-app.site' : name }
                         })}
                     />
 

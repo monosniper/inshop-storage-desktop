@@ -15,6 +15,8 @@ import {requireUser} from "~/utils/session.server";
 import {createDomain, deleteDomain, deleteDomains} from "~/models/domain.server";
 import Switch from "~/components/ui/Switch";
 import Domains from "~/components/Domains";
+import shopsIcon from "~/assets/icons/nav/index/shops.svg";
+import domainsIcon from "~/assets/icons/nav/index/domains.svg";
 
 export function links() {
     return [{ rel: "stylesheet", href: styles }];
@@ -41,6 +43,18 @@ export const loader = async ({ request }) => {
         domains,
         user,
         noties,
+        subNav: [
+            {
+                pathname: '/',
+                icon: shopsIcon,
+                title: 'Магазины',
+            },
+            {
+                pathname: '/domains',
+                icon: domainsIcon,
+                title: 'Доменные имена',
+            },
+        ],
     });
 };
 
@@ -48,7 +62,7 @@ export const action = async ({ request }) => {
     const formData = await request.formData();
     const user = await requireUser(request)
     let result = null;
-
+    console.log(formData.get('isSubdomain'))
     switch (formData.get('_action')) {
         case 'create':
             result = await createDomain({
@@ -89,7 +103,7 @@ export default function DomainsPage() {
             actionData.data.deleteDomain && toast('Доменное имя удалено')
             actionData.data.deleteDomains && toast('Доменные имена удалены')
 
-            if(actionData.data.DomainClient) {
+            if(actionData.data.createDomain) {
                 setIsCreateOpen(false)
                 toast('Доменное имя добавлено успешно')
 
