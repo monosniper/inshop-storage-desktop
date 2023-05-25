@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Header from "~/components/Layout/Header";
 import Navigation from "~/components/Layout/Navigation";
 import {toast, ToastContainer} from "react-toastify";
@@ -6,6 +6,7 @@ import {useLoaderData, useLocation, useTransition} from "@remix-run/react";
 import LoadingBar from 'react-top-loading-bar'
 import {motion} from 'framer-motion'
 import SelectBar from "~/components/SelectBar";
+import SubNav from "~/components/Layout/SubNav";
 
 const Layout = ({ children, render=null }) => {
     const loadingRef = useRef()
@@ -27,6 +28,7 @@ const Layout = ({ children, render=null }) => {
     }, [transition.state])
 
     const motionEl = <motion.main
+        className={'anim'}
         key={useLocation().pathname}
         initial={{x: '10%', opacity: 0}}
         animate={{opacity: 1, x: '0'}}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Select from 'react-select'
 
 import logo from "../../assets/img/logo.svg";
@@ -7,6 +7,7 @@ import {useFetcher, useLoaderData, useLocation, useSearchParams} from "@remix-ru
 import SubNav from "~/components/Layout/SubNav";
 import {motion} from "framer-motion";
 import Search from "~/components/Search";
+import useWindowSize from "~/utils/useWindowSize";
 
 
 const Header = ({ user, shops, domain }) => {
@@ -26,7 +27,6 @@ const Header = ({ user, shops, domain }) => {
             redirectTo: location.pathname
         }, {method: 'post', action: 'api/set_domain'})
     }
-
     return (
         <header className={'header'}>
             {loaderData.subNav && <motion.main
@@ -36,7 +36,7 @@ const Header = ({ user, shops, domain }) => {
                 exit={{x: '10%', opacity: 0}}
                 transition={{duration: 0.3}}
             >
-                <SubNav />
+                <SubNav className={'sub-nav_max'} />
             </motion.main>}
             <div className="header__container">
                 <img src={logo}/>

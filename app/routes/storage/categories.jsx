@@ -139,9 +139,9 @@ export default function CategoriesPage() {
               Категории
           </div>
             <div className="title__right">
-                <button onClick={handleCreate} className="btn">
+                <button onClick={handleCreate} className="btn btn_create">
                     <img src={plusIcon}/>
-                    Добавить категорию
+                    <span>Добавить категорию</span>
                 </button>
             </div>
         </div>

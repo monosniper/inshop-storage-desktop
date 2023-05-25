@@ -7,7 +7,7 @@ import styles from "~/styles/global.css";
 import Positions from "~/components/Positions";
 import Layout from "~/components/Layout/Layout";
 import storageIcon from "~/assets/icons/black_storage.svg";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {toast} from "react-toastify";
 import {Dialog, Heading, Label, Pane, SideSheet, Textarea, TextInputField} from "evergreen-ui";
 import plusIcon from "~/assets/icons/add.svg";
@@ -19,6 +19,7 @@ import {getShops} from "~/models/shop.server";
 import {requireUser} from "~/utils/session.server";
 import positionsIcon from '~/assets/icons/nav/storage.svg';
 import categoriesIcon from '~/assets/icons/nav/storage/categories.svg';
+import createIcon from "~/assets/icons/create.svg";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
@@ -221,7 +222,7 @@ export default function Storage() {
             }
         }
     }, [actionData])
-
+    console.log(data.positions)
     return <Layout>
         <div className="title">
           <div className="title__left">
@@ -229,9 +230,10 @@ export default function Storage() {
               Общий склад
           </div>
             <div className="title__right">
-                <button onClick={handleCreate} className="btn">
+                <button onClick={handleCreate} className="btn btn_create">
                     <img src={plusIcon}/>
-                    Добавить позицию
+                    <img className={'btn_create__img_min'} src={createIcon}/>
+                    <span>Добавить позицию</span>
                 </button>
             </div>
         </div>

@@ -99,14 +99,13 @@ export async function getDomains(userId, notUsed) {
   }
 }
 
-export async function searchPostions(query, limit, userId) {
+export async function searchPostions(query, limit) {
   try {
     return await newGraphQLClient().query({
       query: SEARCH_POSITIONS,
       variables: {
         query,
         limit,
-        userId,
       },
     });
   } catch (e) {

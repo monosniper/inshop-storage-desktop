@@ -1,14 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 
 import clientImg from '../assets/img/client.png'
-import editIcon from '../assets/icons/edit.svg'
-import deleteIcon from '../assets/icons/delete.svg'
 import Checkbox from "~/components/Checkbox";
 import {Dialog, Heading, Label, Pane, SideSheet, TextInputField,} from "evergreen-ui";
-import {Form, useActionData, useLoaderData, useLocation, useSubmit} from "@remix-run/react";
+import {Form, useActionData, useLocation, useSubmit} from "@remix-run/react";
 import {store} from "~/lib/mobx";
 import {observer} from "mobx-react";
 import ImageInput from "~/components/ImageInput";
+import Row from "~/components/Row";
 
 const Client = ({ client }) => {
     const submit = useSubmit();
@@ -69,29 +68,41 @@ const Client = ({ client }) => {
         return avatar.length ? `https://www.inshop-online.com/storage/${client.uuid}/images/${avatar[0]}` : clientImg
     }
 
-    return (
-        <div className={'row'}>
-            <div className="row__col row__col_1">
-                <Checkbox handleCheck={handleSelect} checked={selected} />
-            </div>
-            <div className="row__col row__col_1 row__id row__number">{client.id}</div>
-            <div className="row__col row__col_2">
-                <div className="row__img" style={{backgroundImage: `url(${getAvatarPath()})`}} />
-            </div>
-            <div className="row__col row__col_4">{client.fio}</div>
-            <div className="row__col row__col_4"><a className={'link'} href={"mailto:"+client.email}>{client.email}</a></div>
-            <div className="row__col row__col_2"><a className={'link'} href={"tel:"+client.phone}>{client.phone}</a></div>
-            <div className="row__col row__col_3">{client.address}</div>
-            <div className="row__col row__col_1">{client.age}</div>
+    const columns = [
+        {
+            width: 2,
+            img: getAvatarPath(),
+        },
+        {
+            width: 4,
+            content: client.fio,
+        },
+        {
+            width: 4,
+            content: <a className={'link'} href={"mailto:"+client.email}>{client.email}</a>,
+        },
+        {
+            width: 2,
+            content: <a className={'link'} href={"tel:"+client.phone}>{client.phone}</a>,
+        },
+        {
+            width: 3,
+            content: client.address,
+        },
+        {
+            width: 1,
+            content: client.age,
+        },
+    ]
 
-            <div className="row__col row__col_2 row__btns">
-                <div className={"row__btn row__btn_edit " + (store.isSelectBarShown ? 'row__btn_disabled' : '')} onClick={handleEdit}>
-                    <img src={editIcon} />
-                </div>
-                <div className={"row__btn row__btn_delete " + (store.isSelectBarShown ? 'row__btn_disabled' : '')} onClick={handlePreDelete}>
-                    <img src={deleteIcon} />
-                </div>
-            </div>
+    return <Row
+        handleEdit={handleEdit}
+        handlePreDelete={handlePreDelete}
+        columns={columns}
+        handleCheck={handleSelect}
+        checked={selected}
+        id={client.id}
+        extend={<>
             <SideSheet
                 width={500}
                 isShown={isEditOpen}
@@ -198,8 +209,8 @@ const Client = ({ client }) => {
                     <input type="hidden" name={'id'} value={client.id}/>
                 </Form>
             </Dialog>
-        </div>
-    );
+        </>}
+    />;
 };
 
 export default observer(Client);

@@ -17,6 +17,7 @@ import Switch from "~/components/ui/Switch";
 import Domains from "~/components/Domains";
 import shopsIcon from "~/assets/icons/nav/index/shops.svg";
 import domainsIcon from "~/assets/icons/nav/index/domains.svg";
+import createIcon from "~/assets/icons/create.svg";
 
 export function links() {
     return [{ rel: "stylesheet", href: styles }];
@@ -119,9 +120,10 @@ export default function DomainsPage() {
                 Доменные имена
             </div>
             <div className="title__right">
-                <button onClick={handleCreate} className="btn">
+                <button onClick={handleCreate} className="btn btn_create">
                     <img src={plusIcon}/>
-                    Зарегистрировать домен
+                    <img className={'btn_create__img_min'} src={createIcon}/>
+                    <span>Зарегистрировать домен</span>
                 </button>
             </div>
         </div>

@@ -6,6 +6,7 @@ import {Dialog} from "evergreen-ui";
 import {Form, useActionData, useLocation, useSubmit} from "@remix-run/react";
 import {store} from "~/lib/mobx";
 import {observer} from "mobx-react";
+import Row from "~/components/Row";
 
 const Client = ({ domain }) => {
     const submit = useSubmit();
@@ -48,25 +49,28 @@ const Client = ({ domain }) => {
 
     const url = domain.isSubdomain ? domain.name + '.inshop-app.site' : domain.name
 
+    const columns = [
+        {
+            content: <a className={'link'} target={'_blank'} href={'http://'+url}>{url}</a>,
+        },
+        {
+            // Current shop
+            content: <></>,
+        },
+        {
+            // Состояние - активен (днс направлен)
+            content: <></>,
+        },
+    ]
+
     return (
-        <div className={'row'}>
-            <div className="row__col row__col_1">
-                <Checkbox handleCheck={handleSelect} checked={selected} />
-            </div>
-            <div className="row__col row__col_1 row__id row__number">{domain.id}</div>
-            <div className="row__col"><a className={'link'} target={'_blank'} href={'http://'+url}>{url}</a></div>
-            <div className="row__col">
-                {/*  Current shop  */}
-            </div>
-            <div className="row__col">
-                {/*  Состояние - активен (днс направлен)  */}
-            </div>
-            <div className="row__col row__btns">
-                <div className={"row__btn row__btn_delete " + (store.isSelectBarShown ? 'row__btn_disabled' : '')} onClick={handlePreDelete}>
-                    <img src={deleteIcon} />
-                </div>
-            </div>
-            <Dialog
+        <Row
+            columns={columns}
+            handleCheck={handleSelect}
+            checked={selected}
+            id={domain.id}
+            handlePreDelete={handlePreDelete}
+            extend={<Dialog
                 isShown={isSureDeleteShown}
                 title="Вы уверены?"
                 intent="danger"
@@ -81,8 +85,8 @@ const Client = ({ domain }) => {
                     <input type="hidden" name={'_action'} value={'delete'}/>
                     <input type="hidden" name={'id'} value={domain.id}/>
                 </Form>
-            </Dialog>
-        </div>
+            </Dialog>}
+        />
     );
 };
 

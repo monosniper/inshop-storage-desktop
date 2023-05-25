@@ -17,9 +17,10 @@ const Shop = ({ shop }) => {
     const [title, setTitle] = useState(shop.options.title)
     const [description, setDescription] = useState(shop.options.description)
     const [domain, setDomain] = useState({value: shop.Domain.id, label: shop.Domain.name})
+    const [currency, setCurrency] = useState({value: shop.options.currency, label: shop.options.currency})
 
-    const preview = shop.Media && shop.Media.length && shop.Media.find(media => media.name === 'preview') ? [
-        shop.Media.find(media => media.name === 'preview').filename
+    const preview = shop.Media && shop.Media.length && shop.Media.find(media => media.name === '_preview') ? [
+        shop.Media.find(media => media.name === '_preview').filename
     ] : []
 
     const favicon = shop.Media && shop.Media.length && shop.Media.find(media => media.name === 'favicon') ? [
@@ -54,13 +55,15 @@ const Shop = ({ shop }) => {
     const getPreviewPath = () => {
         return preview.length ? `https://www.inshop-online.com/storage/${shop.uuid}/images/${preview[0]}` : shopPreviewImg
     }
-    console.log(shop)
+
+    const url = shop.Domain.isSubdomain ? shop.Domain.name + '.inshop-app.site' : shop.Domain.name
+
+    const currencies = ['$', '₴', '₽']
+
     return (
         <>
             <div className={'shop'}>
-                <div className="shop__preview">
-                    <img src={getPreviewPath()}/>
-                </div>
+                <div className="shop__preview" style={{backgroundImage: 'url('+getPreviewPath()+')'}}></div>
                 <div className="shop__bottom">
                     <div className="shop__head">
                         <div className="shop__icon">
@@ -68,7 +71,7 @@ const Shop = ({ shop }) => {
                         </div>
                         <div className="shop__info">
                             <div className="shop__title">{shop.options.title}</div>
-                            <a className="shop__link" href={shop.Domain?.name} target={'_blank'}>{shop.Domain?.name}</a>
+                            <a className="shop__link" href={"http://"+url} target={'_blank'}>{url}</a>
                         </div>
                     </div>
                     <div className="shop__footer">
@@ -119,6 +122,17 @@ const Shop = ({ shop }) => {
                         })}
                     />
 
+                    <Label className={'lbl ub-mb_8px'}>Валюта</Label>
+                    <Select
+                        placeholder={'Валюта'}
+                        name={'currency'}
+                        onChange={(e) => setCurrency(e.value)}
+                        defaultValue={currency}
+                        options={currencies.map(curr => {
+                            return { value: curr, label: curr }
+                        })}
+                    />
+
                     <Label marginBottom={4} marginTop={4} display="block">
                         Фавикон
                     </Label>
@@ -134,7 +148,7 @@ const Shop = ({ shop }) => {
                     <ImageInput
                         uuid={shop.uuid}
                         images={preview}
-                        name={'preview'}
+                        name={'_preview'}
                     />
 
                     <div className="d-flex flex-between mt-1">

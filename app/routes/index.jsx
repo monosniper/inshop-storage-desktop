@@ -11,6 +11,7 @@ import {Form, useActionData, useLoaderData} from "@remix-run/react";
 import {Heading, Label, Pane, SideSheet, TextInputField} from "evergreen-ui";
 import React, {useEffect, useState} from "react";
 import plusIcon from "~/assets/icons/add.svg";
+import createIcon from "~/assets/icons/create.svg";
 import {createShop, deleteShop, updateShop} from "~/models/shop.server";
 import {toast} from "react-toastify";
 import Select from "react-select";
@@ -38,10 +39,11 @@ export const action = async ({ request }) => {
                     options: {
                         title: formData.get('title'),
                         description: formData.get('description'),
+                        currency: formData.get('currency'),
                     }
                 },
                 media: {
-                    preview: formData.get('preview'),
+                    _preview: formData.get('_preview'),
                     favicon: formData.get('favicon'),
                 }
             }
@@ -55,6 +57,7 @@ export const action = async ({ request }) => {
                 options: {
                     title: formData.get('title'),
                     description: formData.get('description'),
+                    currency: formData.get('currency'),
                 }
             });
             break;
@@ -123,9 +126,10 @@ const Index = observer(() => {
             <div className="title">
                 <div className="title__left"></div>
                 <div className="title__right">
-                    <button onClick={handleCreate} className="btn">
+                    <button onClick={handleCreate} className="btn btn_create">
                         <img src={plusIcon}/>
-                        Создать магазин
+                        <img className={'btn_create__img_min'} src={createIcon}/>
+                        <span>Создать магазин</span>
                     </button>
                 </div>
             </div>

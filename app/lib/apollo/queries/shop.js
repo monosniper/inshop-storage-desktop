@@ -17,6 +17,7 @@ export const GET_SHOPS = gql`
             Domain {
                 id
                 name
+                isSubdomain
             }
             Modules {
                 slug

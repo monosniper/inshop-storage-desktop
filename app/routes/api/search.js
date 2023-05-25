@@ -4,7 +4,6 @@ import {searchPostions, searchModules, searchCategories} from "~/models/shop.ser
 import moduleImg from "~/assets/img/module.png";
 import positionImg from "~/assets/img/position.png";
 import categoryImg from "~/assets/img/category.png";
-import shopImg from "~/assets/img/shop_icon.png";
 
 export const loader = async ({ request }) => {
     const url = new URL(request.url);
@@ -12,7 +11,7 @@ export const loader = async ({ request }) => {
     const limit = url.searchParams.get("limit");
 
     const user = await requireUser(request)
-    let positions = await searchPostions(query, Number(limit), user.id)
+    let positions = await searchPostions(query, Number(limit))
     let modules = await searchModules(query, Number(limit))
     let categories = await searchCategories(query, Number(limit), user.id)
     // let shops = await searchShops(query, Number(limit), user.id)

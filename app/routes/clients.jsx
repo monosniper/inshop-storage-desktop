@@ -4,7 +4,7 @@ import {Form, useActionData, useLoaderData, useLocation} from "@remix-run/react"
 import styles from "~/styles/global.css";
 import clientsBlackImg from '../assets/icons/clients_black.svg'
 import Layout from "~/components/Layout/Layout";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {Heading, Pane, SideSheet, TextInputField} from "evergreen-ui";
 import plusIcon from "~/assets/icons/add.svg";
@@ -14,6 +14,7 @@ import {getShops} from "~/models/shop.server";
 import {requireUser} from "~/utils/session.server";
 import {createClient, deleteClient, deleteClients, getClients, updateClient} from "~/models/client.server";
 import Clients from '../components/Clients'
+import createIcon from "~/assets/icons/create.svg";
 
 export function links() {
     return [{ rel: "stylesheet", href: styles }];
@@ -145,9 +146,10 @@ export default function ClientsPage() {
                 Клиенты
             </div>
             <div className="title__right">
-                <button onClick={handleCreate} className="btn">
+                <button onClick={handleCreate} className="btn btn_create">
                     <img src={plusIcon}/>
-                    Зарегистрировать клиента
+                    <img className={'btn_create__img_min'} src={createIcon}/>
+                    <span>Зарегистрировать клиента</span>
                 </button>
             </div>
         </div>
